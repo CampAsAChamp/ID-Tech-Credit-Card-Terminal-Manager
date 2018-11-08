@@ -1,0 +1,61 @@
+body {
+	font-family: "Open Sans";
+}
+
+.base {
+	width: 90%;
+	padding: 0% 5%;
+	display: inline-block;
+}
+
+.search-bar {
+	font-size: 35pt;
+	padding: 30px 25px;
+    height: 70px;
+    width: 85%;
+    border: 1px grey solid;
+    border-radius: 35px;
+}
+.results-list {
+	list-style: none;
+	padding: 0% 5%;
+}
+
+.result-holder {
+	height: 150px;
+    font-size: 25pt;
+    text-align: left;
+    background: #dcffd7;
+    margin-top: 10px;
+    padding: 0px 20px;
+    cursor: pointer;
+}
+
+.result-name {
+	font-weight: 700;
+	line-height: 150px;
+}
+
+.result-subtext {
+	float: right;
+	font-size: 20pt;
+	font-color: #ddd;
+	line-height: 150px;
+}
+
+.sort-by-holder {
+	font-size: 35pt;
+	float: left;
+	margin-top: 40px;
+	text-align: left;
+}
+
+.sort-by {
+	margin: 5px 15px;
+	font-size: 35pt;
+}
+
+.sort-by-label {
+	font-size: 35pt;
+}
+

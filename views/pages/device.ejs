@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700'; rel='stylesheet' type='text/css'>
+
+    </br>
+    <center>
+        <img src="https://www.barcodegiant.com/media/catalog/product/cache/4/small_image/500x/9df78eab33525d08d6e5fb8d27136e95/logos/lg/IDTech.gif"
+            width="300"
+            height="300"
+            alt="IDTech Logo">
+
+        <input class="search-bar" placeholder="Search by Device ID" type="text">
+        <div class="base sort-by-holder">
+            <span class="sort-by-label">Sort By: </span>
+            <select class="sort-by">
+              <option value="mostrecent" selected>Most Recent (Default)</option>
+            </select>
+        </div>
+        <ul class="base results-list">
+        <% for (var i = 0; i < data.length; ++i) { %>
+            <li class="result-holder">
+                <span class="result-name"><%- data[i].deviceID %></span>
+                <span class="result-subtext">Last Update <%- new Date(data[i].lastHeartbeat).toDateString() %></span>
+            </li>
+        <% } %>
+        </ul>
+        </br>
+    </center>
+
+</head>
+
+</html>
