@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Log In</title>
+    <title>Two-Factor Authentication</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
@@ -16,18 +16,16 @@
 
         <form>
             <font size="4">
-                Username:<br>
-                <input type="text" name="User Name" style="width: 200px;height: 20px;">
+                We have sent a temporary code to <br>
+                xxx-xxx-xxxx <br>
                 <br>
-                <br>
-                Password:<br>
-                <input type="password" name="Password" style="width: 200px;height: 20px;">
+                <input type="text" name="6-Digit Code " style="width: 200px;height: 20px;" maxlength="6" required placeholder="6-Digit Code">
             </font>
         </form>
         </br>
 
-        <form action="/twofact" method="post">
-            <input type="submit" class="ghost-button" value="Log In" style="width: 100px;">
+        <form action="/home" method="post">
+            <input type="submit" class="ghost-button" value="Verify" style="width: 100px;">
         </form>
     </center>
 

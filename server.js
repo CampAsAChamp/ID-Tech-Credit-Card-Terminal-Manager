@@ -24,8 +24,13 @@ router.get('/', function (req, res) {
 });
 
 // Submit Login Form (post request to '/')
-router.post('/', function(req, res) {
-	res.render('pages/home');
+router.post('/twofact', function(req, res) {
+	res.render('pages/twofact');
+});
+
+// Submit Verification Form (post request to '/')
+router.post('/home', function(req, res) {
+  res.render('pages/home');
 });
 
 // Device/Event Page
