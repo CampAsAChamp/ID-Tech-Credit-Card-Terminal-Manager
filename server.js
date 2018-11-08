@@ -1,6 +1,7 @@
-const express = require('express')
-const app = express()
-const router = express.Router()
+const express = require('express');
+const app = express();
+app.set('view engine', 'ejs');
+const router = express.Router();
 
 function requiresLogin(req, res, next) {
   if (req.session && req.session.userId) {
@@ -12,25 +13,29 @@ function requiresLogin(req, res, next) {
   }
 }
 
+// Login/Home Page
 router.get('/', function (req, res) {
 	// User is logged in
 	if (req.user) {
 	    res.render('home');
 	}
 	// User not logged in
-    res.render('index');
-})
+    res.render('pages/index');
+});
 
+// Submit Login Form (post request to '/')
 router.post('/', function(req, res) {
-	res.render('home');
-})
+	res.render('pages/home');
+});
 
-// mount the router on the app
-app.use('/', router)
+// Device/Event Page
+router.get('/devices', function(req, res) {
+	res.render('pages/device')
+});
 
-// Will change later to 
+// Mount the router on the app
+app.use('/', router);
+
 app.listen(3000, function () {
     console.log('Running on port 3000')
-})
-
-app.set('view engine', 'ejs')
+});
