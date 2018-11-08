@@ -8,6 +8,7 @@ app.use(express.static('static'))
 var mockData = [];
 var products = ["VP5300", "Augusta S", "VP8800", "VP6300"]
 var status = ["Connected", "RKI In Progess", "Offline"]
+var start = new Date("01/01/2018"), end = new Date("01/01/2011");
 for (var i = 0; i < 100; ++i) {
   mockData[i] = {
     "deviceID" : "US-WC-CA-" + (300 - i),
@@ -15,7 +16,7 @@ for (var i = 0; i < 100; ++i) {
     "modelNo" : "model" + i,
     "serialNo" : "s" + i,
     "lastStatus" : status[i % products.length],
-    "lastHeartbeat" : new Date(Date.now() - Math.random()).toString()
+    "lastHeartbeat" : new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toString()
   }
 }
 // End TODO: Delete Later
@@ -34,15 +35,9 @@ function requiresLogin(req, res, next) {
 // Utility function retrieves most recent N entries
 function mostRecent(data, N=5) {
   const dateLabel = "lastHeartbeat";
-  return data.sort(function(entryX, entryY) {
-    const x = entryX[dateLabel], y = entryY[dateLabel];
-    if (x < y) {
-      return -1;
-    }
-    if (x > y) {
-      return 1;
-    }
-    return 0;
+  return data.sort(function(x, y) {
+    const a = new Date(x[dateLabel]), b = new Date(y[dateLabel]);
+    return a - b;
   }).slice(N * -1);
 }
 
