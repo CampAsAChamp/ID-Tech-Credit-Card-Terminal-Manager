@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 app.set('view engine', 'ejs');
 const router = express.Router();
-app.use(express.static('static'))
+app.use(express.static('static'));
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
 
 // TODO: Delete later
 var mockData = [];
@@ -44,33 +46,64 @@ function mostRecent(data, N=5) {
 // Login/Home Page
 router.get('/', function (req, res) {
 	// User is logged in
-	if (req.user) {
-	    res.render('home');
+  console.log(req.session);
+
+	if (req.session && req.session.user) {
+      
+	    res.render('pages/home');
 	}
 	// User not logged in
-    res.render('pages/index');
+    res.render('pages/login');
 });
+
+router.get('/twofact', function (req, res, next) {
+  res.render('pages/twofact');
+})
 
 // Submit Login Form (post request to '/')
-router.post('/twofact', function(req, res) {
-	res.render('pages/twofact');
+router.post('/', function(req, res, next) {
+  var newUser = {id: "user", password: "pw"};
+  req.session.user = newUser;
+	res.redirect('/twofact');
 });
 
+
 // Submit Verification Form (post request to '/')
-router.post('/home', function(req, res) {
-  res.render('pages/home');
+router.post('/twofact', function(req, res, next) {
+  var newUser = {id: "user", password: "pw"};
+  req.session.user = newUser;
+  res.redirect('/');
 });
 
 // Device/Event Page
-router.get('/devices', function(req, res) {
+router.get('/devices', function(req, res, next) {
   var fetched = mostRecent(mockData);
-  console.log(fetched)
-  res.render('pages/device', {
+  res.render('pages/devices', {
         data: fetched
     });
 });
 
+// Profile Page
+router.get('/profile', function(req, res, next) {
+  res.render('pages/profile');
+});
+
+// Logout Current User
+router.get('/logout', function(req, res, next) {
+  if (req.session) {
+    // delete session object
+    req.session.destroy(function(err) {
+      if (err) {
+        return next(err);
+      } else {
+        return res.redirect('/');
+      }
+    });
+  }
+});
+
 // Mount the router on the app
+app.use(session({secret: "secret key"}));
 app.use('/', router);
 
 app.listen(3000, function () {

@@ -1,0 +1,278 @@
+ /* Table of Contents:
+ ––––––––––––––––––––––––––––––––––––––––––––––––––
+ - Base Style
+ - Error Pages
+ - Navigation Bar
+ - Table
+ */
+
+/* Base Style
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #f3f3f3;
+}
+a {
+  text-decoration: none;
+}
+::selection {
+  background: #e1e1e1;
+}
+::-moz-selection {
+  background: #e1e1e1;
+}
+.header {
+  text-align: center;
+  font-weight: 600;
+  font-size: 35px;
+}
+.footer {
+  top: 1000px;
+  float: center;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  font-size: 11px;
+  font-weight: 600;
+}
+.center-vert {
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+/* Error Pages
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.errorPage {
+  text-align: center;
+  word-wrap: break-word;
+  margin-top: 10em;
+  margin-bottom: 10em;
+}
+/* div containing 'go back to home' button */
+.errorPage .row:last-child {
+  width: 300px; /* match width of button */
+  margin: auto;
+  margin-top: 1em;
+}
+.errorPage a {
+  margin-bottom: 2em;
+}
+
+/* Navigation Bar
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.navbar {
+  padding-top: 5px;
+  background: black;
+  height: 56px;
+}
+.navbar-list {
+  list-style: none;
+  margin-bottom: 0;
+  width: 100%;
+  position: absolute;
+  height: 60px;
+}
+.sidenav-list {
+  list-style: none;
+  position: absolute;
+}
+.navbar-brand {
+  height: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 5rem;
+  color: #000033;
+  font-size: 20px;
+  position: relative;
+  margin: 3px 0px 0px 10px;
+  width: 200px;
+  display: inline-block;
+}
+#logo {
+  height: 45px;
+  cursor: pointer;
+}
+/* navbar list items on top right */
+.navbar-holder {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+.navbar-login {
+  float: right;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+/* navbar list links */
+.navbar-link {
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 5rem;
+  color: white;
+}
+
+/* Menu Buttons */
+.gtbtn {
+  border-radius: 0;
+  background: transparent;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 4px solid transparent;
+  cursor: pointer;
+  height:40px;
+  width:auto;
+  text-align:center;
+}
+.gtbtn.nav {
+  line-height: 5px;
+  margin: 7px 60px 0px;
+}
+.gtbtn.acct {
+  line-height: 5px;
+  margin: 7px 20px 0px;
+}
+.gtbtn.side {
+  font-size: 15pt;
+  line-height: 5px;
+  color: white;
+  float: left;
+  margin: 10px;
+}
+.gtbtn:hover {
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #cc0066;
+  color: #00944f;
+}
+.gtbtn.side:hover {
+  border-bottom: 4px solid black;
+  color: #00944f;
+}
+
+.gtnbtn.acct.profile {
+  text-transform: none;
+  font-weight: normal;
+}
+.usearch-mobile-icon-holder {
+  display: none;
+  cursor: pointer;
+  padding: 7px 10px 0px 0px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.sidebar-mobile-icon-holder {
+  display: none;
+  cursor: pointer;
+  padding: 7px 0px 0px 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.navcolor {
+  z-index: -1;
+  position: absolute;
+  display: none;
+  height: 61px;
+  top: 0px;
+}
+.usearch-mobile {
+  display: inline-block !important;
+  border-radius: 10px !important;
+  border: 2px solid #ff99cc !important;
+}
+.usearch-mobile-holder {
+  text-align: right !important;
+  display: inline-block !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin-left: 50px !important;
+  margin-top: 7px !important;
+}
+.ui-menu {
+  text-align: left !important;
+}
+
+/* Pop Up Search Bar
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.usearch-holder {
+  display: none;
+  margin-left:60px;
+  height:45px;
+  width:400px;
+  position: absolute;
+  z-index: 100;
+}
+
+.usearch-bar {
+  margin: 0px !important; 
+  font-size: 16pt;
+  border-radius: 0px 10px 10px 10px;
+  border: 2px solid #cc0066 !important;
+  width: 400px;
+  height: 45px !important;
+  z-index: 100;
+}
+
+.sidebar {
+  position: absolute;
+  height: 100%;
+  width: 185px;
+  left: -325px; top: 61px;
+  background: black;
+  color: white;
+}
+
+input.text
+{
+  background:white;
+  border:1px solid #ddd;
+  color:#333;
+  font-size: 13.5pt;
+  height: 45px;
+  border-radius: 15px;
+  margin:0;
+  padding:2px 6px;
+}
+
+@media screen and (max-width: 975px) {
+  .navbar-holder {
+/*    visibility: hidden;
+    clear: both;
+    float: left;
+    margin: 10px auto 5px 20px;
+    width: 0%;*/
+    display: none;
+  }
+  .navbar-login {
+/*    visibility: hidden;
+    clear: both;
+    float: left;
+    margin: 10px auto 5px 20px;
+    width: 0%;*/
+    display: none;
+  }
+  .navbar-brand {
+    margin-left: 15px;
+  }
+  .navbar-list {
+    text-align: center;
+  }
+  .usearch-mobile-icon-holder {
+    display: inline-block;
+    z-index: 500;
+  }
+  .sidebar-mobile-icon-holder {
+    display: inline-block;
+    z-index: 500;
+  }
+}

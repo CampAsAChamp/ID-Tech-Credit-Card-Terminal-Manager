@@ -9,7 +9,7 @@ body {
 }
 
 .search-bar {
-	font-size: 35pt;
+	font-size: 20pt;
 	padding: 30px 25px;
     height: 70px;
     width: 85%;
@@ -22,8 +22,9 @@ body {
 }
 
 .result-holder {
-	height: 150px;
-    font-size: 25pt;
+	height: 55px;
+	line-height: 55px;
+    font-size: 17pt;
     text-align: left;
     background: #dcffd7;
     margin-top: 10px;
@@ -33,29 +34,28 @@ body {
 
 .result-name {
 	font-weight: 700;
-	line-height: 150px;
 }
 
 .result-subtext {
 	float: right;
-	font-size: 20pt;
-	font-color: #ddd;
-	line-height: 150px;
+	font-size: 8pt;
+	line-height: 100px;
+	color: #333;
+	height: 15px;
 }
 
 .sort-by-holder {
-	font-size: 35pt;
+	font-size: 17pt;
 	float: left;
 	margin-top: 40px;
 	text-align: left;
 }
 
 .sort-by {
-	margin: 5px 15px;
-	font-size: 35pt;
+	font-size: 17pt;
 }
 
 .sort-by-label {
-	font-size: 35pt;
+	font-size: 17pt;
 }
 
