@@ -4,6 +4,11 @@
 <head>
   <title>Devices</title>
   <% include ../partials/head %>
+  <script>
+    $("#sort-by").change(function(event) {
+      $("#sort-by-form").submit();
+    });
+  </script>
 </head>
 <body>
     <% include ../partials/header %>
@@ -12,11 +17,26 @@
         <input class="search-bar" placeholder="Search by Device ID" type="text">
         <div class="base sort-by-holder">
             <span class="sort-by-label">Sort By: </span>
-            <select class="sort-by">
-              <option value="mostrecent" selected>Most Recent (Default)</option>
-            </select>
+            <form style="margin: 0; display: inline-block;"id="sort-by-form" enctype="application/x-www-form-urlencoded" method="post">
+              <select id="sort-by" class="sort-by" name="sortby" onchange="this.form.submit()">
+                <% if (sortby == "mostrecent") {%> 
+                <option selected value="mostrecent">
+                <% } else {%>
+                <option value="mostrecent">
+                <% } %>
+                  Most Recent (Default)
+                </option>
+                <% if (sortby == "leastrecent") {%> 
+                <option selected value="leastrecent">
+                <% } else {%>
+                <option value="leastrecent">
+                <% } %>
+                  Least Recent
+                </option>
+              </select>
+            </form>
         </div>
-        <ul class="base results-list">
+        <ul id="results-list" class="base results-list">
         <% for (var i = 0; i < data.length; ++i) { %>
             <li class="result-holder">
                 <span class="result-name"><%- data[i].deviceID %></span>
