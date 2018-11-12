@@ -68,6 +68,8 @@ a {
   padding-top: 5px;
   background: black;
   height: 56px;
+  width: 100%;
+  position: fixed;
 }
 .navbar-list {
   list-style: none;
@@ -125,7 +127,6 @@ a {
   padding: 10px;
   font-size: 16px;
   border: none;
-  border-bottom: 4px solid transparent;
   cursor: pointer;
   height:40px;
   width:auto;
@@ -149,11 +150,9 @@ a {
 .gtbtn:hover {
   border: none;
   background: transparent;
-  border-bottom: 4px solid #cc0066;
   color: #00944f;
 }
 .gtbtn.side:hover {
-  border-bottom: 4px solid black;
   color: #00944f;
 }
 
@@ -161,14 +160,7 @@ a {
   text-transform: none;
   font-weight: normal;
 }
-.usearch-mobile-icon-holder {
-  display: none;
-  cursor: pointer;
-  padding: 7px 10px 0px 0px;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
+
 .sidebar-mobile-icon-holder {
   display: none;
   cursor: pointer;
@@ -179,25 +171,13 @@ a {
 }
 .navcolor {
   z-index: -1;
-  position: absolute;
+  position: fixed;
   display: none;
   height: 61px;
+  width: 100%;
   top: 0px;
 }
-.usearch-mobile {
-  display: inline-block !important;
-  border-radius: 10px !important;
-  border: 2px solid #ff99cc !important;
-}
-.usearch-mobile-holder {
-  text-align: right !important;
-  display: inline-block !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  margin-left: 50px !important;
-  margin-top: 7px !important;
-}
+
 .ui-menu {
   text-align: left !important;
 }
@@ -213,18 +193,8 @@ a {
   z-index: 100;
 }
 
-.usearch-bar {
-  margin: 0px !important; 
-  font-size: 16pt;
-  border-radius: 0px 10px 10px 10px;
-  border: 2px solid #cc0066 !important;
-  width: 400px;
-  height: 45px !important;
-  z-index: 100;
-}
-
 .sidebar {
-  position: absolute;
+  position: fixed;
   height: 100%;
   width: 185px;
   left: -325px; top: 61px;

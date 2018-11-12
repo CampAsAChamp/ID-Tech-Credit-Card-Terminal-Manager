@@ -22,8 +22,8 @@ body {
 }
 
 .result-holder {
-	height: 55px;
-	line-height: 55px;
+	height: 60px;
+    line-height: 47px;
     font-size: 17pt;
     text-align: left;
     background: #dcffd7;
@@ -37,11 +37,12 @@ body {
 }
 
 .result-subtext {
-	float: right;
-	font-size: 8pt;
-	line-height: 100px;
-	color: #333;
-	height: 15px;
+	float: left;
+    font-size: 8pt;
+    line-height: 0px;
+    color: #333;
+    height: 15px;
+    display: inline-block;
 }
 
 .sort-by-holder {

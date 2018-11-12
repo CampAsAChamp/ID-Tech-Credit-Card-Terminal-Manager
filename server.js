@@ -27,15 +27,14 @@ for (var i = 0; i < 100; ++i) {
 function requiresLogin(req, res, next) {
   if (req.session && req.session.userId) {
     return next();
-  } else {
-    var err = new Error('You must be logged in to view this page.');
-    err.status = 401;
-    return next(err);
+  }
+  else {
+    return res.redirect('/');
   }
 }
 
 // Utility function retrieves most recent N entries
-function mostRecent(data, N=5) {
+function mostRecent(data, N=30) {
   const dateLabel = "lastHeartbeat";
   return data.sort(function(x, y) {
     const a = new Date(x[dateLabel]), b = new Date(y[dateLabel]);
@@ -46,37 +45,31 @@ function mostRecent(data, N=5) {
 // Login/Home Page
 router.get('/', function (req, res) {
 	// User is logged in
-  console.log(req.session);
-
-	if (req.session && req.session.user) {
-      
+  if (req.session && req.session.user) {
 	    res.render('pages/home');
 	}
 	// User not logged in
     res.render('pages/login');
 });
 
-router.get('/twofact', function (req, res, next) {
+router.get('/twofact', function (req, res) {
   res.render('pages/twofact');
 })
 
 // Submit Login Form (post request to '/')
-router.post('/', function(req, res, next) {
-  var newUser = {id: "user", password: "pw"};
-  req.session.user = newUser;
+router.post('/', function(req, res) {
+  req.session.user = {id: "user", password: "pw"};
 	res.redirect('/twofact');
 });
 
 
 // Submit Verification Form (post request to '/')
-router.post('/twofact', function(req, res, next) {
-  var newUser = {id: "user", password: "pw"};
-  req.session.user = newUser;
+router.post('/twofact', function(req, res) {
   res.redirect('/');
 });
 
 // Device/Event Page
-router.get('/devices', function(req, res, next) {
+router.get('/devices', function(req, res) {
   var fetched = mostRecent(mockData);
   res.render('pages/devices', {
         data: fetched
@@ -84,20 +77,16 @@ router.get('/devices', function(req, res, next) {
 });
 
 // Profile Page
-router.get('/profile', function(req, res, next) {
+router.get('/profile', function(req, res) {
   res.render('pages/profile');
 });
 
 // Logout Current User
-router.get('/logout', function(req, res, next) {
+router.get('/logout', function(req, res) {
   if (req.session) {
     // delete session object
     req.session.destroy(function(err) {
-      if (err) {
-        return next(err);
-      } else {
-        return res.redirect('/');
-      }
+      res.redirect('/');
     });
   }
 });
