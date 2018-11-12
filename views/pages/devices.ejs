@@ -13,7 +13,7 @@
 <body>
     <% include ../partials/header %>
     </br>
-    <center>
+    <center style="margin-top: 50px;">
         <input class="search-bar" placeholder="Search by Device ID" type="text">
         <div class="base sort-by-holder">
             <span class="sort-by-label">Sort By: </span>
@@ -24,14 +24,14 @@
                 <% } else {%>
                 <option value="mostrecent">
                 <% } %>
-                  Most Recent (Default)
+                  Most Recent Update
                 </option>
                 <% if (sortby == "leastrecent") {%> 
                 <option selected value="leastrecent">
                 <% } else {%>
                 <option value="leastrecent">
                 <% } %>
-                  Least Recent
+                  Least Recent Update
                 </option>
               </select>
             </form>

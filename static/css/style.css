@@ -32,10 +32,6 @@ body {
     cursor: pointer;
 }
 
-.result-name {
-	font-weight: 700;
-}
-
 .result-subtext {
 	float: left;
     font-size: 8pt;

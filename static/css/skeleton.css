@@ -177,7 +177,7 @@ input[type="button"] {
   color: white;
   text-align: center;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 300;
   line-height: 38px;
   letter-spacing: .1rem;
   text-transform: uppercase;
@@ -198,7 +198,7 @@ button:focus,
 input[type="submit"]:focus,
 input[type="reset"]:focus,
 input[type="button"]:focus {
-  background: #00944f;
+  background: #02752d;
   outline: 0; }
 .button.button-primary,
 button.button-primary,
@@ -227,8 +227,8 @@ button.ready {
   border-color: #00944f;
 }
 button.ready:hover {
-  color: #00944f;
-  border-color: #00944f
+  color: #02752d;
+  border-color: #02752d;
 }
 
 /* Forms

@@ -13,7 +13,7 @@ body {
   background-color: #f3f3f3;
 }
 a {
-  text-decoration: none;
+  text-decoration: underline;
 }
 ::selection {
   background: #e1e1e1;
@@ -66,7 +66,7 @@ a {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .navbar {
   padding-top: 5px;
-  background: black;
+  background: #2c2c2c;
   height: 56px;
   width: 100%;
   position: fixed;
@@ -113,7 +113,7 @@ a {
 /* navbar list links */
 .navbar-link {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 300;
   text-decoration: none;
   line-height: 5rem;
   color: white;
@@ -169,14 +169,6 @@ a {
   top: 0;
   left: 0;
 }
-.navcolor {
-  z-index: -1;
-  position: fixed;
-  display: none;
-  height: 61px;
-  width: 100%;
-  top: 0px;
-}
 
 .ui-menu {
   text-align: left !important;
@@ -198,7 +190,7 @@ a {
   height: 100%;
   width: 185px;
   left: -325px; top: 61px;
-  background: black;
+  background: #2c2c2c;
   color: white;
 }
 
