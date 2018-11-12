@@ -55,14 +55,12 @@ function mostRecent(data, reverse=false, N=30) {
   const dateLabel = "lastHeartbeat";
   return data.sort(function(x, y) {
     const a = new Date(x[dateLabel]), b = new Date(y[dateLabel]);
-    if (reverse)
+    if (reverse) {
+      return a - b;
+    } else {
       return b - a;
-    return a - b;
-  }).slice(N * -1);
-}
-
-function sortBy(data, sortingFunction, N=30) {
-  return data.sort(sortingFunction).slice(N * -1);
+    }
+  }).slice(0, N);
 }
 
 // Home Page
