@@ -5,106 +5,148 @@
   <title>Devices</title>
   <% include ../partials/head %>
 </head>
+
 <body>
-    <% include ../partials/header %>
-    </br>
-    <center style="top: 0; margin-top: 67px; position: absolute; display: inline-block;">
-        <h3 style="margin-bottom: 8px;position:relative;">My Devices</h3>
-        <input class="search-bar" placeholder="Search by Device ID" id="query" name="query" type="text">
-        <div class="base sort-by-holder">
-            <span class="sort-by-label">Sort By: </span>
-            <form style="margin: 0; display: inline-block;" id="sort-by-form" enctype="application/x-www-form-urlencoded" method="post">
-              <select id="sortby" class="sort-by" name="sortby" onchange="this.form.submit()">
-                <% if (sortby == "mostrecent") {%> 
-                <option selected value="mostrecent">
-                <% } else {%>
-                <option value="mostrecent">
-                <% } %>
-                  Most Recent Update
-                </option>
-                <% if (sortby == "leastrecent") {%> 
-                <option selected value="leastrecent">
-                <% } else {%>
-                <option value="leastrecent">
-                <% } %>
-                  Least Recent Update
-                </option>
-              </select>
-            </form>
-        </div>
-        <div class="base sort-by-holder">
-          <span class="sort-by-label">Filter By: </span>
-          <button id="addfilter">Add Filter</button>
-        </div>
-        <ul id="results-list" class="base results-list">
-        <% for (var i = 0; i < data.length; ++i) { %>
-            <li class="result-holder <%- data[i].lastStatus %>">
-                <span class="result-subtext status"><%- data[i].lastStatus %></span>
-                <span class="result-name"><%- data[i].deviceID %></span>
-                <br>
-                <span class="result-subtext">Last Update <%- new Date(data[i].lastHeartbeat).toDateString() %></span>
-            </li>
-        <% } %>
-        </ul>
-        </br>
-    </center>
-    <div id="filters" class="filters-popup">
-      <div class="filters-popup-bar">
-        <div style="color:white;font-size:13pt;padding:4px 10px;display:inline-block;">Filters</div>
-        <img id="closefilters" src="/img/close2.png">
-      </div>
-      <div class="filters-popup-content">
-        <h5 style="margin-bottom:8px">Last Status</h5>
-        <select name="laststatus">
-          <option>Online</option>
-          <option>Offline</option>
-          <option>RKI In Progress</option>
+  <% include ../partials/header %>
+  </br>
+  <center style="top: 0; margin-top: 67px; position: absolute; display: inline-block;">
+    <h3 style="margin-bottom: 8px;position:relative;">My Devices</h3>
+    <input class="search-bar" placeholder="Search by Device ID" id="query" name="query" type="text">
+
+
+    <!-- Add even listener -->
+    <div class="base sort-by-holder">
+      <span class="sort-by-label">Sort By: </span>
+      <form style="margin: 0; display: inline-block;" id="sort-by-form" enctype="application/x-www-form-urlencoded"
+        method="post">
+        <select id="sortby" class="sort-by" name="sortby" onchange="this.form.submit()">
+          <% if (sortby == "mostrecent") {%>
+          <option selected value="mostrecent">
+            <% } else {%>
+          <option value="mostrecent">
+            <% } %>
+            Most Recent Update
+          </option>
+          <% if (sortby == "leastrecent") {%>
+          <option selected value="leastrecent">
+            <% } else {%>
+          <option value="leastrecent">
+            <% } %>
+            Least Recent Update
+          </option>
         </select>
-        <h5 style="margin-bottom:8px;">Last Heartbeat</h5>
+      </form>
+    </div>
+    <div class="base sort-by-holder">
+      <span class="sort-by-label">Filter By: </span>
+      <button id="addfilter">Add Filter</button>
+    </div>
+    <ul id="results-list" class="base results-list">
+      <% for (var i = 0; i < data.length; ++i) { %>
+      <li class="result-holder <%- data[i].lastStatus %>">
+        <span class="result-subtext status">
+          <%- data[i].lastStatus %></span>
+        <span class="result-name">
+          <%- data[i].deviceID %></span>
+        <br>
+        <span class="result-subtext">Last Update
+          <%- new Date(data[i].lastHeartbeat).toDateString() %></span>
+      </li>
+      <% } %>
+    </ul>
+    </br>
+  </center>
+  <div id="filters" class="filters-popup">
+    <div class="filters-popup-bar">
+      <div style="color:white;font-size:13pt;padding:4px 10px;display:inline-block;">Filters</div>
+      <img id="closefilters" src="/img/close2.png">
+    </div>
+    <div class="filters-popup-content">
+      <h5 style="margin-bottom:8px">Last Status</h5>
+      <select name="laststatus">
+        <option>Online</option>
+        <option>Offline</option>
+        <option>RKI In Progress</option>
+      </select>
+      <h5 style="margin-bottom:8px;">Last Heartbeat</h5>
+      <div>
+        <div style="margin-bottom:8px;">
+          <span>From</span>
+          <input class="text" type="text" id="from" name="from">
+        </div>
         <div>
-          <div style="margin-bottom:8px;">
-            <span>From</span>
-            <input class="text" type="text" id="from" name="from">
-          </div>
-          <div>
-            <span>To</span>
-            <input class="text" type="text" id="to" name="to">
-          </div>
+          <span>To</span>
+          <input class="text" type="text" id="to" name="to">
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="close-modal" class="close">&times;</span>
+        <h2>Device: WS345</h2>
+      </div>
+      <div class="modal-body">
+        <p>Device ID: </p>
+        <p>Some other text...</p>
+      </div>
+    </div>
+
+  </div>
+
+
   <script>
     function updateEntries(entries) {
-      var statusColor = {"Connected": "#dcffd7", "RKI In Progess": "#fff1c9", "Offline": "#ffc9c9"};
+      var statusColor = { "Connected": "#dcffd7", "RKI In Progess": "#fff1c9", "Offline": "#ffc9c9" };
       $(".results-list").empty();
       for (var i = 0; i < entries.length; ++i) {
         $(".results-list").append('<li class="result-holder" style="background:' + statusColor[entries[i].lastStatus] + '"><span class="result-subtext status">' + entries[i].lastStatus + '</span><span class="result-name">' + entries[i].deviceID + '</span><br><span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toDateString() + '</span></li>');
       }
     }
-    $("#sortby").change(function(event) {
+    $("#sortby").change(function (event) {
       $("#sort-by-form").submit();
     });
-    $("#addfilter").click(function(event) {
-      $("#filters").fadeIn('400', function() {
+    $("#addfilter").click(function (event) {
+      $("#filters").fadeIn('400', function () {
       });
     });
-    $("#closefilters").click(function(event) {
-      $("#filters").fadeOut('400', function() {
+
+    $("#closefilters").click(function (event) {
+      $("#filters").fadeOut('400', function () {
       });
     });
-    $("#query").on("input", function(e) {
+
+    $(".result-holder").click(function (event) {
+      // Get the modal
+      var modal = document.getElementById('myModal');
+      $("#myModal").fadeIn(400);
+    });
+
+    $("#close-modal").click(function (event) {
+      var span = document.getElementsByClassName("close")[0];
+      $("#myModal").fadeOut('400', function () {
+      });
+    });
+
+    $("#query").on("input", function (e) {
       var input = $(this);
       var val = input.val();
 
       if (input.data("lastval") != val) {
         input.data("lastval", val);
-        $.post('/getdevices', {query: $(this)[0].value, sortby: $("#sortby")[0].value}, function(data, textStatus, xhr) {
+        $.post('/getdevices', { query: $(this)[0].value, sortby: $("#sortby")[0].value }, function (data, textStatus, xhr) {
           updateEntries(data.data);
         });
       }
     });
     $("#from").datepicker();
     $("#to").datepicker();
+
 
   </script>
 </body>
