@@ -1,28 +1,28 @@
 body {
-	font-family: "Open Sans";
+    font-family: "Open Sans";
 }
 
 .base {
-	width: 90%;
-	padding: 0% 5%;
-	display: inline-block;
+    width: 90%;
+    padding: 0% 5%;
+    display: inline-block;
 }
 
 .search-bar {
-	font-size: 20pt;
-	padding: 30px 25px;
+    font-size: 20pt;
+    padding: 30px 25px;
     height: 70px;
     width: 90%;
     border: 1px grey solid;
     border-radius: 35px;
 }
 .results-list {
-	list-style: none;
-	padding: 0% 5%;
+    list-style: none;
+    padding: 0% 5%;
 }
 
 .result-holder {
-	height: 60px;
+    height: 60px;
     line-height: 47px;
     font-size: 17pt;
     text-align: left;
@@ -33,19 +33,19 @@ body {
 }
 
 .result-holder.Connected {
-	background: #dcffd7;
+    background: #dcffd7;
 }
 
 .result-holder.Offline {
-	background: #ffc9c9;
+    background: #ffc9c9;
 }
 
 .result-holder.RKI {
-	background: #fff1c9;
+    background: #fff1c9;
 }
 
 .result-subtext {
-	float: left;
+    float: left;
     font-size: 8pt;
     line-height: 0px;
     color: #333;
@@ -53,29 +53,29 @@ body {
     display: inline-block;
 }
 .status {
-	float: right;
+    float: right;
     line-height: 20px;
     font-size: 9pt;
 }
 
 .sort-by-holder {
-	font-size: 17pt;
-	float: left;
-	text-align: left;
+    font-size: 17pt;
+    float: left;
+    text-align: left;
 }
 
 .sort-by {
-	font-size: 17pt;
+    font-size: 17pt;
 }
 
 .sort-by-label {
-	font-size: 17pt;
+    font-size: 17pt;
 }
 
 .filters-popup {
-	background: #fff;
+    background: #fff;
     width: 90%;
-    height: 325px;
+    height: 305px;
     position: fixed;
     z-index: 100;
     top: 70px;
@@ -89,8 +89,8 @@ body {
 }
 
 .filters-popup-bar {
-	width: 100%;
-    height: 35px;
+    width: 100%;
+    height: 40px;
     background: #2c2c2c;
     top: 0px;
     position: absolute;
@@ -98,7 +98,31 @@ body {
 }
 
 .filters-popup-content {
-	padding: 35px 5px;
+    padding: 40px 5px;
+}
+
+#closefilters {
+    float: right;
+    cursor: pointer;
+    height: 18px;
+    margin: 10px 12px;
+}
+.key { 
+    float: left;
+    display: inline-block;
+    width: 20%;
+}
+.value {
+    float: left;
+    display: inline-block;
+    width: 55%;
+    padding-left: 2%;
+    height: 1.8em;
+}
+.entry {
+    overflow: auto;
+    margin-bottom: 15px;
+    line-height: 1.8em;
 }
 
 /* The Modal (background) */
@@ -164,13 +188,3 @@ body {
 }
 
 .modal-body {padding: 2px 16px;}
-
-
-
-#closefilters {
-	float: right;
-	cursor: pointer;
-	height: 18px;
-    margin: 8px 12px;
-}
-

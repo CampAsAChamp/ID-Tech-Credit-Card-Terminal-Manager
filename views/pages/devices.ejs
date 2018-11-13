@@ -102,23 +102,55 @@
 
   <script>
     function updateEntries(entries) {
-      var statusColor = { "Connected": "#dcffd7", "RKI In Progess": "#fff1c9", "Offline": "#ffc9c9" };
+      var statusColor = {"Connected": "#dcffd7", "RKI In Progress": "#fff1c9", "Offline": "#ffc9c9"};
       $(".results-list").empty();
       for (var i = 0; i < entries.length; ++i) {
         $(".results-list").append('<li class="result-holder" style="background:' + statusColor[entries[i].lastStatus] + '"><span class="result-subtext status">' + entries[i].lastStatus + '</span><span class="result-name">' + entries[i].deviceID + '</span><br><span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toDateString() + '</span></li>');
       }
     }
-    $("#sortby").change(function (event) {
+    $("#sortby").change(function(event) {
       $("#sort-by-form").submit();
     });
-    $("#addfilter").click(function (event) {
-      $("#filters").fadeIn('400', function () {
-      });
+    $("#addfilter").click(function(event) {
+      $("#filters").fadeIn('400');
     });
+    $("#closefilters").click(function(event) {
+      $("#filters").fadeOut('400');
+    });
+    $("#query").on("input", function(e) {
+      var input = $(this);
+      var val = input.val();
 
-    $("#closefilters").click(function (event) {
-      $("#filters").fadeOut('400', function () {
-      });
+      if (input.data("lastval") != val) {
+        input.data("lastval", val);
+        $.post('/getdevices',
+               {query: $(this)[0].value,
+                sortby: $("#sortby")[0].value},
+                function(data, textStatus, xhr) {
+                  updateEntries(data.data);
+                });
+      }
+    });
+    $("#from").datepicker({
+      minDate: 0,
+      onSelect: function(){
+        var startDate = $(this).datepicker('getDate');
+        $("#to").datepicker('option', 'minDate', startDate);
+      }
+    });
+    $("#to").datepicker({minDate: 0});
+    $("#applyfilters").click(function(event) {
+      $("#filters").fadeOut('400');
+      $.post('/getdevices',
+             {query: $("#query").value,
+              sortby: $("#sortby")[0].value,
+              lastStatus: $("#laststatus")[0].value,
+              from: $("#from")[0].value,
+              to: $("#to")[0].value},
+              function(data, textStatus, xhr) {
+                console.log(data.data);
+                updateEntries(data.data);
+              });
     });
 
     $(".result-holder").click(function (event) {
@@ -132,20 +164,6 @@
       $("#myModal").fadeOut('400', function () {
       });
     });
-
-    $("#query").on("input", function (e) {
-      var input = $(this);
-      var val = input.val();
-
-      if (input.data("lastval") != val) {
-        input.data("lastval", val);
-        $.post('/getdevices', { query: $(this)[0].value, sortby: $("#sortby")[0].value }, function (data, textStatus, xhr) {
-          updateEntries(data.data);
-        });
-      }
-    });
-    $("#from").datepicker();
-    $("#to").datepicker();
 
 
   </script>

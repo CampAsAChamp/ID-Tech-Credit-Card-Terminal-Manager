@@ -28,7 +28,7 @@ var sortingMap = {"mostrecent": mostRecent, "leastrecent": leastRecent};
 var mockData = [];
 var products = ["VP5300", "Augusta S", "VP8800", "VP6300"];
 var loc = ["US-WC-CA-", "US-WC-NV-", "US-WC-OR-", "US-EC-NY-", "US-EC-FL-", "US-EC-MD-"];
-var status = ["Connected", "RKI In Progress", "Offline"];
+var statuses = ["Connected", "RKI In Progress", "Offline"];
 var start = new Date("01/01/2018"), end = new Date("01/01/2011");
 for (var i = 0; i < 100; ++i) {
   mockData[i] = {
@@ -36,7 +36,7 @@ for (var i = 0; i < 100; ++i) {
     "product" : products[i % products.length],
     "modelNo" : "model" + i,
     "serialNo" : "s" + i,
-    "lastStatus" : status[i % status.length],
+    "lastStatus" : statuses[i % statuses.length],
     "lastHeartbeat" : new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toString()
   }
 }
@@ -89,16 +89,22 @@ function filter(data, conditions) {
 // field with fieldName is equal to mustEqual
 function createEQfilter(fieldName, mustEqual) {
   return function(entry) {
-    return entry[fieldName] == mustEqual;
+    return entry[fieldName].toLowerCase() == mustEqual.toLowerCase();
   };
+}
+
+function createRangeFilter(fieldName, start, end) {
+  return function(entry) {
+    return entry[fieldName] >= start && entry[fieldName] <= end;
+  }
 }
 
 // Home Page
 router.get('/', function (req, res) {
-	// User is logged in
+  // User is logged in
   if (req.session && req.session.user) {
-	    res.render('pages/home');
-	}
+      res.render('pages/home');
+  }
   else {
     // User not logged in
     res.redirect('/login');
@@ -119,7 +125,7 @@ router.get('/login', function(req, res) {
 });
 router.post('/login', function(req, res) {
   req.session.user = {id: req.body.username, password: req.body.password};
-	return res.redirect('/twofact');
+  return res.redirect('/twofact');
 });
 
 // Device/Event Page
@@ -157,9 +163,26 @@ router.get('/logout', function(req, res) {
 });
 
 router.post('/getdevices', function(req, res) {
-  var query = req.body.query.toLowerCase();
-  var sortingMethod = req.body.sortby;
-  var matchingData = filter(mockData, [function(e){ return e["deviceID"].toLowerCase().match(query); }]);
+  var query = req.body.query,
+      sortingMethod = req.body.sortby,
+      lastStatus = req.body.lastStatus,
+      to = req.body.to,
+      from = req.body.from;
+  console.log(lastStatus);
+
+  var matchingData = [];
+  var filters = [];
+  if (query)
+    filters.push(function(e){ return e["deviceID"].toLowerCase().match(query); });
+  if (lastStatus && lastStatus != "any")
+    filters.push(createEQfilter("lastStatus", lastStatus));
+  console.log(filters);
+  if (filter.length > 0)
+    matchingData = filter(mockData, filters);
+  if (sortingMethod)
+    matchingData = sortBy(matchingData, sortingMap[sortingMethod]);
+
+
   matchingData = sortBy(matchingData, sortingMap[sortingMethod]);
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({ sortby: sortingMethod, data: matchingData }));
