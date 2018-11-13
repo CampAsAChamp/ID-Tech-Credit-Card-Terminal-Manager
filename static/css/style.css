@@ -104,6 +104,7 @@ body {
 #closefilters {
 	float: right;
 	cursor: pointer;
-
+	height: 18px;
+    margin: 8px 12px;
 }
 

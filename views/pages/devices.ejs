@@ -31,8 +31,10 @@
                 </option>
               </select>
             </form>
-<!--             <span class="sort-by-label">Filter By: </span>
-            <button id="addfilter">Add Filter</button> -->
+        </div>
+        <div class="base sort-by-holder">
+          <span class="sort-by-label">Filter By: </span>
+          <button id="addfilter">Add Filter</button>
         </div>
         <ul id="results-list" class="base results-list">
         <% for (var i = 0; i < data.length; ++i) { %>
@@ -49,7 +51,7 @@
     <div id="filters" class="filters-popup">
       <div class="filters-popup-bar">
         <div style="color:white;font-size:13pt;padding:4px 10px;display:inline-block;">Filters</div>
-        <img id="closefilters" style="height: 35px;float:right;" src="/img/close.png">
+        <img id="closefilters" src="/img/close2.png">
       </div>
       <div class="filters-popup-content">
         <h5 style="margin-bottom:8px">Last Status</h5>
@@ -62,11 +64,11 @@
         <div>
           <div style="margin-bottom:8px;">
             <span>From</span>
-            <input class="text" type="text" name="from">
+            <input class="text" type="text" id="from" name="from">
           </div>
           <div>
             <span>To</span>
-            <input class="text" type="text" name="to">
+            <input class="text" type="text" id="to" name="to">
           </div>
         </div>
       </div>
@@ -101,6 +103,8 @@
         });
       }
     });
+    $("#from").datepicker();
+    $("#to").datepicker();
 
   </script>
 </body>
