@@ -40,7 +40,7 @@
                 <span class="result-subtext status"><%- data[i].lastStatus %></span>
                 <span class="result-name"><%- data[i].deviceID %></span>
                 <br>
-                <span class="result-subtext">Last Update <%- new Date(data[i].lastHeartbeat).toString() %></span>
+                <span class="result-subtext">Last Update <%- new Date(data[i].lastHeartbeat).toDateString() %></span>
             </li>
         <% } %>
         </ul>
@@ -76,7 +76,7 @@
       var statusColor = {"Connected": "#dcffd7", "RKI In Progess": "#fff1c9", "Offline": "#ffc9c9"};
       $(".results-list").empty();
       for (var i = 0; i < entries.length; ++i) {
-        $(".results-list").append('<li class="result-holder" style="background:' + statusColor[entries[i].lastStatus] + '"><span class="result-subtext status">' + entries[i].lastStatus + '</span><span class="result-name">' + entries[i].deviceID + '</span><br><span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toString() + '</span></li>');
+        $(".results-list").append('<li class="result-holder" style="background:' + statusColor[entries[i].lastStatus] + '"><span class="result-subtext status">' + entries[i].lastStatus + '</span><span class="result-name">' + entries[i].deviceID + '</span><br><span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toDateString() + '</span></li>');
       }
     }
     $("#sortby").change(function(event) {
