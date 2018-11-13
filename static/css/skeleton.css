@@ -176,8 +176,9 @@ input[type="button"] {
   padding: 0 30px;
   color: white;
   text-align: center;
-  font-size: 15px;
-  font-weight: 300;
+  width: 160px;
+  font-size: 13pt;
+  font-weight: normal;
   line-height: 38px;
   letter-spacing: .1rem;
   text-transform: uppercase;
@@ -186,7 +187,6 @@ input[type="button"] {
   border: none;
   cursor: pointer;
   box-sizing: border-box;
-  width: 200px;
   background: #00944f;}
 .button:hover,
 button:hover,

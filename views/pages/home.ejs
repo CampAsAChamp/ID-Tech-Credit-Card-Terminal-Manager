@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Homepage</title>
   <% include ../partials/head %>
+  <link rel="stylesheet" type="text/css" 
+  href="/css/profile.css">
 </head>
 <body>
   <% include ../partials/header %>
-  <center class="center-vert" style="width:100%; text-align: center">
-    <h1>Dummy Homepage</h1>
-</center>
+  <center style="margin-top: 67px; display: inline-block; width:100%;" style="width:100%; text-align: center">
+  	<div style="background: none" class="info-holder">
+		<h3 style="margin-bottom: 8px;position:relative; text-align: left;">Terminal Management System</h3>
+		<div class="entry">
+			<span class="tms-detail">Deployed Devices: <a>1738</a></span>
+		</div>
+		<div class="entry">
+			<span class="tms-detail">Online: <a>51</a></span>
+			<span class="tms-detail">Offline: <a>10</a></span>
+			<span class="tms-detail">Alerts: <a>0</a></span>
+		</div>
+	</div>
+	</center>
 </body>
 
 </html>

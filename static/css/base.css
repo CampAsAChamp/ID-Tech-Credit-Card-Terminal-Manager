@@ -70,6 +70,7 @@ a {
   height: 56px;
   width: 100%;
   position: fixed;
+  z-index: 1000;
 }
 .navbar-list {
   list-style: none;
@@ -120,7 +121,7 @@ a {
 }
 
 /* Menu Buttons */
-.gtbtn {
+.navbtn {
   border-radius: 0;
   background: transparent;
   color: white;
@@ -132,27 +133,27 @@ a {
   width:auto;
   text-align:center;
 }
-.gtbtn.nav {
+.navbtn.nav {
   line-height: 5px;
   margin: 7px 60px 0px;
 }
-.gtbtn.acct {
+.navbtn.acct {
   line-height: 5px;
   margin: 7px 20px 0px;
 }
-.gtbtn.side {
+.navbtn.side {
   font-size: 15pt;
   line-height: 5px;
   color: white;
   float: left;
   margin: 10px;
 }
-.gtbtn:hover {
+.navbtn:hover {
   border: none;
   background: transparent;
   color: #00944f;
 }
-.gtbtn.side:hover {
+.navbtn.side:hover {
   color: #00944f;
 }
 
@@ -192,6 +193,7 @@ a {
   left: -325px; top: 61px;
   background: #2c2c2c;
   color: white;
+  z-index: 1000;
 }
 
 input.text
@@ -200,7 +202,7 @@ input.text
   border:1px solid #ddd;
   color:#333;
   font-size: 13.5pt;
-  height: 45px;
+  height: 40px;
   border-radius: 15px;
   margin:0;
   padding:2px 6px;

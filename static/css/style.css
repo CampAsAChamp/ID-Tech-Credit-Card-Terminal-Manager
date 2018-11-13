@@ -12,7 +12,7 @@ body {
 	font-size: 20pt;
 	padding: 30px 25px;
     height: 70px;
-    width: 85%;
+    width: 90%;
     border: 1px grey solid;
     border-radius: 35px;
 }
@@ -32,6 +32,18 @@ body {
     cursor: pointer;
 }
 
+.result-holder.Connected {
+	background: #dcffd7;
+}
+
+.result-holder.Offline {
+	background: #ffc9c9;
+}
+
+.result-holder.RKI {
+	background: #fff1c9;
+}
+
 .result-subtext {
 	float: left;
     font-size: 8pt;
@@ -40,11 +52,15 @@ body {
     height: 15px;
     display: inline-block;
 }
+.status {
+	float: right;
+    line-height: 20px;
+    font-size: 9pt;
+}
 
 .sort-by-holder {
 	font-size: 17pt;
 	float: left;
-	margin-top: 40px;
 	text-align: left;
 }
 
@@ -54,5 +70,40 @@ body {
 
 .sort-by-label {
 	font-size: 17pt;
+}
+
+.filters-popup {
+	background: #fff;
+    width: 90%;
+    height: 325px;
+    position: fixed;
+    z-index: 100;
+    top: 70px;
+    border-radius: 20px;
+    display: none;
+    padding: 7px;
+    overflow: hidden;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+.filters-popup-bar {
+	width: 100%;
+    height: 35px;
+    background: #2c2c2c;
+    top: 0px;
+    position: absolute;
+    left: 0px;
+}
+
+.filters-popup-content {
+	padding: 35px 5px;
+}
+
+#closefilters {
+	float: right;
+	cursor: pointer;
+
 }
 

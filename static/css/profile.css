@@ -21,7 +21,6 @@
 
 .info-holder {
 	background: #fff;
-    height: 600px;
     padding: 10px;
     text-align: left;
     overflow:auto;
@@ -31,3 +30,9 @@
 	overflow: auto;
 	margin-bottom: 5px;
 }
+
+.tms-detail {
+	display: inline;
+	padding: 0px 5px;
+}
+

@@ -22,19 +22,21 @@ app.use('/', router);
 app.listen(3000, function () {
     console.log('Running on port 3000')
 });
+var sortingMap = {"mostrecent": mostRecent, "leastrecent": leastRecent};
 
 // TODO: Replace Mock Data with actual data
 var mockData = [];
-var products = ["VP5300", "Augusta S", "VP8800", "VP6300"]
-var status = ["Connected", "RKI In Progess", "Offline"]
+var products = ["VP5300", "Augusta S", "VP8800", "VP6300"];
+var loc = ["US-WC-CA-", "US-WC-NV-", "US-WC-OR-", "US-EC-NY-", "US-EC-FL-", "US-EC-MD-"];
+var status = ["Connected", "RKI In Progress", "Offline"];
 var start = new Date("01/01/2018"), end = new Date("01/01/2011");
 for (var i = 0; i < 100; ++i) {
   mockData[i] = {
-    "deviceID" : "US-WC-CA-" + (300 - i),
+    "deviceID" : loc[i % loc.length] + (300 - i),
     "product" : products[i % products.length],
     "modelNo" : "model" + i,
     "serialNo" : "s" + i,
-    "lastStatus" : status[i % products.length],
+    "lastStatus" : status[i % status.length],
     "lastHeartbeat" : new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toString()
   }
 }
@@ -50,17 +52,45 @@ function requiresLogin(req, res, next) {
   }
 }
 
-// Utility function retrieves most recent N entries
-function mostRecent(data, reverse=false, N=30) {
-  const dateLabel = "lastHeartbeat";
-  return data.sort(function(x, y) {
-    const a = new Date(x[dateLabel]), b = new Date(y[dateLabel]);
-    if (reverse) {
-      return a - b;
-    } else {
-      return b - a;
+// Sorting Functions
+function mostRecent(x, y) {
+  const dateLabel = "lastHeartbeat",
+        a = new Date(x[dateLabel]),
+        b = new Date(y[dateLabel]);
+  return b - a;
+}
+
+function leastRecent(x, y) {
+  const dateLabel = "lastHeartbeat",
+        a = new Date(x[dateLabel]),
+        b = new Date(y[dateLabel]);
+  return a - b;
+}
+
+function sortBy(data, sortingFunction, N=30) {
+  return data.sort(sortingFunction).slice(0, N);
+}
+
+// Utility function filters data by a list of conditions
+function filter(data, conditions) {
+  return data.filter(function(entry) {
+    var res = true;
+    for (let condition of conditions) {
+      if (!condition(entry)) {
+        res = false;
+        break;
+      }
     }
-  }).slice(0, N);
+    return res;
+  });
+}
+
+// Utility function creates filter function ensures a
+// field with fieldName is equal to mustEqual
+function createEQfilter(fieldName, mustEqual) {
+  return function(entry) {
+    return entry[fieldName] == mustEqual;
+  };
 }
 
 // Home Page
@@ -94,7 +124,8 @@ router.post('/login', function(req, res) {
 
 // Device/Event Page
 router.get('/devices', function(req, res) {
-  var fetched = mostRecent(mockData);
+  var sortingMethod = "mostrecent";
+  var fetched = sortBy(mockData, sortingMap[sortingMethod]);
   res.render('pages/devices', {
     sortby: "mostrecent",
     data: fetched
@@ -103,15 +134,7 @@ router.get('/devices', function(req, res) {
 
 router.post('/devices', urlEncodedParser, (req, res) => {
   var sortingMethod = req.body.sortby;
-  var fetched = [];
-  switch(sortingMethod) {
-    case "mostrecent":
-      fetched = mostRecent(mockData);
-      break;
-    case "leastrecent":
-      fetched = mostRecent(mockData, reverse=true);
-      break;
-  }
+  var fetched = sortBy(mockData, sortingMap[sortingMethod]);
   res.render('pages/devices', {
     sortby: sortingMethod,
     data: fetched
@@ -131,4 +154,13 @@ router.get('/logout', function(req, res) {
       res.redirect('/');
     });
   }
+});
+
+router.post('/getdevices', function(req, res) {
+  var query = req.body.query.toLowerCase();
+  var sortingMethod = req.body.sortby;
+  var matchingData = filter(mockData, [function(e){ return e["deviceID"].toLowerCase().match(query); }]);
+  matchingData = sortBy(matchingData, sortingMap[sortingMethod]);
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({ sortby: sortingMethod, data: matchingData }));
 });

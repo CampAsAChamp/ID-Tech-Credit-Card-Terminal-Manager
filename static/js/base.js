@@ -15,5 +15,5 @@ $(document).ready(function() {
     if (!$(e.target).hasClass('side'))
       hideSidebar();
   });
-  $(".navbar, .navbar-list, .side, .gtbtn, div.side.sidebar").click(function(e){e.stopPropagation();});
+  $(".navbar, .navbar-list, .side, .navbtn, div.side.sidebar").click(function(e){e.stopPropagation();});
 });
