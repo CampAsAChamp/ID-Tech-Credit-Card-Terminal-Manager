@@ -11,7 +11,7 @@ function displaySidebar() {
   if ($(".sidebar").length > 0)
     return false;
   else {
-    $(".icon").toggleClass("close");
+    $(".icon").addClass("close");
     var buttons = [$("#dash-btn"), $("#profile-btn"), $("#devices-btn"), $("#logout-btn")];
     var contents = "<ul class='side sidenav-list'>";
     for (var button of buttons)
@@ -32,7 +32,7 @@ function hideSidebar() {
   if ($(".sidebar").length == 0)
     return false;
   else {
-    $(".icon").toggleClass("close");
+    $(".icon").removeClass("close");
     $(".sidebar").animate({left: "-325px"}, 300,
         function(){
           $(".sidebar").remove();
