@@ -67,6 +67,8 @@ function leastRecent(x, y) {
   return a - b;
 }
 
+// Function returns data sorted by a provided
+// sorting function
 function sortBy(data, sortingFunction, N=30) {
   return data.sort(sortingFunction).slice(0, N);
 }
@@ -115,6 +117,22 @@ function createRangeFilter(fieldName, start, end) {
   }
 }
 
+function getMatchingEntries(data, query, sortingMethod, lastStatus, to, from) {
+  var filters = [];
+  if (query)
+    filters.push(function(e){ return e["deviceID"].toLowerCase().match(query.toLowerCase()); });
+  if (lastStatus && lastStatus != "Any")
+    filters.push(createEQfilter("lastStatus", lastStatus));
+  if (to || from)
+    filters.push(createRangeFilter("lastHeartbeat", from, to));
+
+  var matchingData = data;
+  if (filter.length > 0)
+    matchingData = filter(data, filters);
+  
+  return sortBy(matchingData, sortingMap[sortingMethod]);
+}
+
 // Home Page
 router.get('/', function (req, res) {
   // User is logged in
@@ -150,16 +168,27 @@ router.get('/devices', function(req, res) {
   var fetched = sortBy(mockData, sortingMap[sortingMethod]);
   res.render('pages/devices', {
     sortby: "mostrecent",
-    data: fetched
+    data: fetched,
+    query: ""
   });
 });
 
 router.post('/devices', urlEncodedParser, (req, res) => {
-  var sortingMethod = req.body.sortby;
-  var fetched = sortBy(mockData, sortingMap[sortingMethod]);
+  var query = req.body.query,
+      sortingMethod = req.body.sortby,
+      lastStatus = req.body.lastStatus,
+      to = req.body.to,
+      from = req.body.from;
+
+  if (!sortingMethod)
+    sortingMethod = "mostrecent";
+
+  var matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
+
   res.render('pages/devices', {
-    sortby: sortingMethod,
-    data: fetched
+    "sortby": sortingMethod,
+    "data": matchingData,
+    "query": query
   });
 });
 
@@ -184,23 +213,10 @@ router.post('/getdevices', function(req, res) {
       lastStatus = req.body.lastStatus,
       to = req.body.to,
       from = req.body.from;
-
-  var filters = [];
-  if (query)
-    filters.push(function(e){ return e["deviceID"].toLowerCase().match(query.toLowerCase()); });
-  if (lastStatus && lastStatus != "Any")
-    filters.push(createEQfilter("lastStatus", lastStatus));
-  if (to || from)
-    filters.push(createRangeFilter("lastHeartbeat", from, to));
-
-  var matchingData = mockData;
-  if (filter.length > 0)
-    matchingData = filter(mockData, filters);
   if (!sortingMethod)
     sortingMethod = "mostrecent";
 
-
-  matchingData = sortBy(matchingData, sortingMap[sortingMethod]);
+  var matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({ sortby: sortingMethod, data: matchingData }));
 });

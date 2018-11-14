@@ -9,16 +9,16 @@
 <body>
   <% include ../partials/header %>
   </br>
-  <center style="top: 0; margin-top: 67px; position: absolute; display: inline-block;">
+  <form style="top: 0; margin-top: 67px; position: absolute; display: inline-block; text-align: -webkit-center;" id="sort-by-form" enctype="application/x-www-form-urlencoded"
+        method="post">
     <h3 style="margin-bottom: 8px;position:relative;">My Devices</h3>
-    <input class="search-bar" placeholder="Search by Device ID" id="query" name="query" type="text">
-
+    <input class="search-bar" placeholder="Search by Device ID" 
+    id="query" name="query" type="text" <%- (query) ? "value='" + query + "'" : ''%>>
 
     <!-- Add even listener -->
     <div class="base sort-by-holder">
       <span class="sort-by-label">Sort By: </span>
-      <form style="margin: 0; display: inline-block;" id="sort-by-form" enctype="application/x-www-form-urlencoded"
-        method="post">
+      <div style="margin: 0; display: inline-block;">
         <select id="sortby" class="sort-by" name="sortby" onchange="this.form.submit()">
           <% if (sortby == "mostrecent") {%>
           <option selected value="mostrecent">
@@ -35,7 +35,7 @@
             Least Recent Update
           </option>
         </select>
-      </form>
+      </div>
     </div>
     <div class="base sort-by-holder">
       <span class="sort-by-label">Filter By: </span>
@@ -55,7 +55,7 @@
       <% } %>
     </ul>
     </br>
-  </center>
+  </form>
   <div id="filters" class="filters-popup">
     <div class="filters-popup-bar">
       <div style="color:white;font-size:13pt;padding:6px 13px;display:inline-block;">Filters</div>
@@ -73,11 +73,11 @@
       <div>
         <div class="entry">
           <span class="key">After</span>
-          <input placeholder="MM/DD/YYYY" style="height: 1.8em" class="text value" type="text" id="from" name="from">
+          <input style="height: 1.8em" class="text value" type="date" id="from" name="from">
         </div>
         <div>
           <span class="key">Before</span>
-          <input placeholder="Today" style="height: 1.8em" class="text value" type="text" id="to" name="to">
+          <input style="height: 1.8em" class="text value" type="date" id="to" name="to">
         </div>
       </div>
       <button style="margin: 20px 0px" id="applyfilters">Apply</button>
@@ -121,9 +121,11 @@
     });
     $("#addfilter").click(function(event) {
       $("#filters").fadeIn('400');
+      return false;
     });
     $("#closefilters").click(function(event) {
       $("#filters").fadeOut('400');
+      return false;
     });
     $("#query").on("input", function(e) {
       var input = $(this);
@@ -139,14 +141,14 @@
                 });
       }
     });
-    $("#from").datepicker({
-      maxDate: 0,
-      onSelect: function(){
-        var startDate = $(this).datepicker('getDate');
-        $("#to").datepicker('option', 'minDate', startDate);
-      }
-    });
-    $("#to").datepicker({maxDate: 0});
+    // $("#from").datepicker({
+    //   maxDate: 0,
+    //   onSelect: function(){
+    //     var startDate = $(this).datepicker('getDate');
+    //     $("#to").datepicker('option', 'minDate', startDate);
+    //   }
+    // });
+    // $("#to").datepicker({maxDate: 0});
     $("#applyfilters").click(function(event) {
       $("#filters").fadeOut('400');
       $.post('/getdevices',
