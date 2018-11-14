@@ -85,6 +85,10 @@ body {
     overflow: hidden;
     left: 50%;
     transform: translateX(-50%);
+    -webkit-animation-name: animatefilterbox;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatefilterbox;
+    animation-duration: 0.4s
 
 }
 
@@ -149,21 +153,31 @@ body {
     border: 1px solid #888;
     width: 80%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    -webkit-animation-name: animatetop;
+    -webkit-animation-name: animatemodal;
     -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
+    animation-name: animatemodal;
     animation-duration: 0.4s
 }
 
 /* Add Animation */
-@-webkit-keyframes animatetop {
+@-webkit-keyframes animatemodal {
     from {top:-300px; opacity:0} 
     to {top:0; opacity:1}
 }
 
-@keyframes animatetop {
+@keyframes animatemodal {
     from {top:-300px; opacity:0}
     to {top:0; opacity:1}
+}
+
+@-webkit-keyframes animatefilterbox {
+    from {top:-300px; opacity:0} 
+    to {top:70; opacity:1}
+}
+
+@keyframes animatefilterbox {
+    from {top:-300px; opacity:0}
+    to {top:70; opacity:1}
 }
 
 /* The Close Button */
