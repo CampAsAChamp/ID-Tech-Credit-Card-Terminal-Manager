@@ -58,27 +58,29 @@
   </center>
   <div id="filters" class="filters-popup">
     <div class="filters-popup-bar">
-      <div style="color:white;font-size:13pt;padding:4px 10px;display:inline-block;">Filters</div>
+      <div style="color:white;font-size:13pt;padding:6px 13px;display:inline-block;">Filters</div>
       <img id="closefilters" src="/img/close2.png">
     </div>
     <div class="filters-popup-content">
       <h5 style="margin-bottom:8px">Last Status</h5>
-      <select name="laststatus">
-        <option>Online</option>
-        <option>Offline</option>
-        <option>RKI In Progress</option>
+      <select id="laststatus" name="laststatus">
+        <option value="Any">Any</option>
+        <option value="Connected">Online</option>
+        <option value="Offline">Offline</option>
+        <option value="RKI In Progress">RKI In Progress</option>
       </select>
       <h5 style="margin-bottom:8px;">Last Heartbeat</h5>
       <div>
-        <div style="margin-bottom:8px;">
-          <span>From</span>
-          <input class="text" type="text" id="from" name="from">
+        <div class="entry">
+          <span class="key">After</span>
+          <input placeholder="MM/DD/YYYY" style="height: 1.8em" class="text value" type="text" id="from" name="from">
         </div>
         <div>
-          <span>To</span>
-          <input class="text" type="text" id="to" name="to">
+          <span class="key">Before</span>
+          <input placeholder="Today" style="height: 1.8em" class="text value" type="text" id="to" name="to">
         </div>
       </div>
+      <button style="margin: 20px 0px" id="applyfilters">Apply</button>
     </div>
   </div>
 
@@ -101,12 +103,18 @@
 
 
   <script>
-    function updateEntries(entries) {
+    function attachClickListeners() {
+      $(".result-holder").click(
+        ()=>{$("#myModal").fadeIn(400);}
+      );
+    }
+    function updateEntries(entries, callback=attachClickListeners) {
       var statusColor = {"Connected": "#dcffd7", "RKI In Progress": "#fff1c9", "Offline": "#ffc9c9"};
       $(".results-list").empty();
       for (var i = 0; i < entries.length; ++i) {
         $(".results-list").append('<li class="result-holder" style="background:' + statusColor[entries[i].lastStatus] + '"><span class="result-subtext status">' + entries[i].lastStatus + '</span><span class="result-name">' + entries[i].deviceID + '</span><br><span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toDateString() + '</span></li>');
       }
+      callback();
     }
     $("#sortby").change(function(event) {
       $("#sort-by-form").submit();
@@ -132,17 +140,17 @@
       }
     });
     $("#from").datepicker({
-      minDate: 0,
+      maxDate: 0,
       onSelect: function(){
         var startDate = $(this).datepicker('getDate');
         $("#to").datepicker('option', 'minDate', startDate);
       }
     });
-    $("#to").datepicker({minDate: 0});
+    $("#to").datepicker({maxDate: 0});
     $("#applyfilters").click(function(event) {
       $("#filters").fadeOut('400');
       $.post('/getdevices',
-             {query: $("#query").value,
+             {query: $("#query")[0].value,
               sortby: $("#sortby")[0].value,
               lastStatus: $("#laststatus")[0].value,
               from: $("#from")[0].value,
@@ -154,15 +162,11 @@
     });
 
     $(".result-holder").click(function (event) {
-      // Get the modal
-      var modal = document.getElementById('myModal');
       $("#myModal").fadeIn(400);
     });
 
     $("#close-modal").click(function (event) {
-      var span = document.getElementsByClassName("close")[0];
-      $("#myModal").fadeOut('400', function () {
-      });
+      $("#myModal").fadeOut(400);
     });
 
 

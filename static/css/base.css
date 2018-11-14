@@ -157,15 +157,10 @@ a {
   color: #00944f;
 }
 
-.gtnbtn.acct.profile {
-  text-transform: none;
-  font-weight: normal;
-}
-
 .sidebar-mobile-icon-holder {
   display: none;
   cursor: pointer;
-  padding: 10px 0px 0px 10px;
+  padding: 10px 0px 0px 0px;
   position: absolute;
   top: 0;
   left: 0;
@@ -231,12 +226,46 @@ input.text
   .navbar-list {
     text-align: center;
   }
-  .usearch-mobile-icon-holder {
-    display: inline-block;
-    z-index: 500;
-  }
   .sidebar-mobile-icon-holder {
     display: inline-block;
     z-index: 500;
+    height: 50px;
+    width: 50px;
   }
+}
+
+/* Mobile sidebar icon animation */
+.icon-wrapper {
+  height: 30px;
+  width: 30px;
+}
+.circle {
+  width:30px;
+  height:30px;
+  position:relative;
+}
+.line {
+  position: absolute;
+  height: 5px;
+  width:100%;
+  background:white;
+  border-radius:4px;
+  transition: all cubic-bezier(0.26, 0.0, 0.27, 0.0) 0.2s;
+}
+.top {
+  top:18%;
+}
+.middle {
+  top:48%;
+}
+.bottom {
+  top:78%;
+}
+.icon.close .top {
+  transform:rotate(45deg);
+  top:48%;
+}
+.icon.close .middle, .icon.close .bottom {
+  transform:rotate(-45deg);
+  top:48%;
 }

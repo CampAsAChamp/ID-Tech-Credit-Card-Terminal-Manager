@@ -71,7 +71,8 @@ function sortBy(data, sortingFunction, N=30) {
   return data.sort(sortingFunction).slice(0, N);
 }
 
-// Utility function filters data by a list of conditions
+// Utility function filters data by a list of functions
+// that return true/false based 
 function filter(data, conditions) {
   return data.filter(function(entry) {
     var res = true;
@@ -85,17 +86,32 @@ function filter(data, conditions) {
   });
 }
 
-// Utility function creates filter function ensures a
-// field with fieldName is equal to mustEqual
+// Utility function creates filter that ensures a
+// field is equal to a specified value
 function createEQfilter(fieldName, mustEqual) {
   return function(entry) {
     return entry[fieldName].toLowerCase() == mustEqual.toLowerCase();
   };
 }
 
+// Utility function creates filter that ensures a
+// date is within range [start, end]. Either can be null
+// to allow for no min or max date.
 function createRangeFilter(fieldName, start, end) {
   return function(entry) {
-    return entry[fieldName] >= start && entry[fieldName] <= end;
+    var d = new Date(entry[fieldName]);
+    if (!start && !end) {
+      return true;
+    } 
+    else if (!start) {
+      return (d < (new Date(end)));
+    }
+    else if (!end) {
+      return (d > (new Date(start)));
+    }
+    else {
+      return (d < (new Date(end))) && (d > (new Date(start)));
+    }
   }
 }
 
@@ -168,19 +184,20 @@ router.post('/getdevices', function(req, res) {
       lastStatus = req.body.lastStatus,
       to = req.body.to,
       from = req.body.from;
-  console.log(lastStatus);
 
-  var matchingData = [];
   var filters = [];
   if (query)
-    filters.push(function(e){ return e["deviceID"].toLowerCase().match(query); });
-  if (lastStatus && lastStatus != "any")
+    filters.push(function(e){ return e["deviceID"].toLowerCase().match(query.toLowerCase()); });
+  if (lastStatus && lastStatus != "Any")
     filters.push(createEQfilter("lastStatus", lastStatus));
-  console.log(filters);
+  if (to || from)
+    filters.push(createRangeFilter("lastHeartbeat", from, to));
+
+  var matchingData = mockData;
   if (filter.length > 0)
     matchingData = filter(mockData, filters);
-  if (sortingMethod)
-    matchingData = sortBy(matchingData, sortingMap[sortingMethod]);
+  if (!sortingMethod)
+    sortingMethod = "mostrecent";
 
 
   matchingData = sortBy(matchingData, sortingMap[sortingMethod]);

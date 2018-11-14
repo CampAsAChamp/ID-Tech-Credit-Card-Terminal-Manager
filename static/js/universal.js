@@ -11,7 +11,7 @@ function displaySidebar() {
   if ($(".sidebar").length > 0)
     return false;
   else {
-    
+    $(".icon").toggleClass("close");
     var buttons = [$("#dash-btn"), $("#profile-btn"), $("#devices-btn"), $("#logout-btn")];
     var contents = "<ul class='side sidenav-list'>";
     for (var button of buttons)
@@ -20,13 +20,11 @@ function displaySidebar() {
     contents += "</ul>";
     $("body").append("<div class='side sidebar'>" + contents + "</div>");
     $(".sidebar").find("button").attr("class","navbtn side");
-    $.when(document.getElementById("sidebar-icon").src = "/img/sidebar/icon-close.gif")
-     .done(function(x){return $(".sidebar").animate({left: "0px"}, 300,
+    $(".sidebar").animate({left: "0px"}, 300,
         function(){
           $(".sidebar-mobile-icon-holder").unbind('click');
           $(".sidebar-mobile-icon-holder").click(hideSidebar);
         });
-     });
   }  
 }
 
@@ -34,13 +32,12 @@ function hideSidebar() {
   if ($(".sidebar").length == 0)
     return false;
   else {
-    $.when(document.getElementById("sidebar-icon").src = "/img/sidebar/icon-open.gif")
-     .done(function(x){return $(".sidebar").animate({left: "-325px"}, 300,
+    $(".icon").toggleClass("close");
+    $(".sidebar").animate({left: "-325px"}, 300,
         function(){
           $(".sidebar").remove();
           $(".sidebar-mobile-icon-holder").unbind('click');
           $(".sidebar-mobile-icon-holder").click(displaySidebar);
         });
-     });
   }
 }
