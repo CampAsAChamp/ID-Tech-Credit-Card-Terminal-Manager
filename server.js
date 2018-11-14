@@ -164,12 +164,23 @@ router.post('/login', function(req, res) {
 
 // Device/Event Page
 router.get('/devices', function(req, res) {
-  var sortingMethod = "mostrecent";
-  var fetched = sortBy(mockData, sortingMap[sortingMethod]);
+
+  // Check for URL Params
+  var query = req.query.q,
+      sortingMethod = req.query.sortby,
+      lastStatus = req.query.status,
+      to = req.query.to,
+      from = req.query.from;
+
+  if (!sortingMethod)
+    sortingMethod = "mostrecent";
+
+  var matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
+
   res.render('pages/devices', {
-    sortby: "mostrecent",
-    data: fetched,
-    query: ""
+    "sortby": sortingMethod,
+    "data": matchingData,
+    "query": query
   });
 });
 
