@@ -29,3 +29,20 @@
   transform: translate(-50%, -50%);
   margin:0;
 }
+.login-field {
+  width: 100%;
+  height: 35px;
+  text-indent: 26px;
+}
+
+#un {
+  background: url(/img/un.png) no-repeat scroll 6px;
+}
+
+#pw {
+  background: url(/img/pw.png) no-repeat scroll 6px;
+}
+
+#auth {
+  background: url(/img/auth.png) no-repeat scroll 6px;
+}

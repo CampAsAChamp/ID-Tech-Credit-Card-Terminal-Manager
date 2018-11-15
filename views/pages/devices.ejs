@@ -13,25 +13,17 @@
         method="post">
     <h3 style="margin-bottom: 8px;position:relative;">My Devices</h3>
     <input class="search-bar" placeholder="Search by Device ID" 
-    id="query" name="query" type="text" <%- (query) ? "value='" + query + "'" : ''%>>
+    id="query" name="query" type="text" <%- (query) ? "value='" + query + "'" : ""%>>
 
     <!-- Add even listener -->
     <div class="base sort-by-holder">
       <span class="sort-by-label">Sort By: </span>
       <div style="margin: 0; display: inline-block;">
         <select id="sortby" class="sort-by" name="sortby" onchange="this.form.submit()">
-          <% if (sortby == "mostrecent") {%>
-          <option selected value="mostrecent">
-            <% } else {%>
-          <option value="mostrecent">
-            <% } %>
+          <option <%- (sortby=="mostrecent")? "selected" : ""%> value="mostrecent">
             Most Recent Update
           </option>
-          <% if (sortby == "leastrecent") {%>
-          <option selected value="leastrecent">
-            <% } else {%>
-          <option value="leastrecent">
-            <% } %>
+          <option <%- (sortby == "leastrecent")? "selected" : ""%> value="leastrecent">
             Least Recent Update
           </option>
         </select>
@@ -64,10 +56,10 @@
     <div class="filters-popup-content">
       <h5 style="margin-bottom:8px">Last Status</h5>
       <select id="laststatus" name="laststatus">
-        <option value="Any">Any</option>
-        <option value="Connected">Online</option>
-        <option value="Offline">Offline</option>
-        <option value="RKI In Progress">RKI In Progress</option>
+        <option <%- (lastStatus=="Any")? "selected" : ""%> value="Any">Any</option>
+        <option <%- (lastStatus=="Connected")? "selected" : ""%> value="Connected">Online</option>
+        <option <%- (lastStatus=="Offline")? "selected" : ""%> value="Offline">Offline</option>
+        <option <%- (lastStatus=="RKI In Progress")? "selected" : ""%> value="RKI In Progress">RKI In Progress</option>
       </select>
       <h5 style="margin-bottom:8px;">Last Heartbeat</h5>
       <div>
@@ -141,14 +133,6 @@
                 });
       }
     });
-    // $("#from").datepicker({
-    //   maxDate: 0,
-    //   onSelect: function(){
-    //     var startDate = $(this).datepicker('getDate');
-    //     $("#to").datepicker('option', 'minDate', startDate);
-    //   }
-    // });
-    // $("#to").datepicker({maxDate: 0});
     $("#applyfilters").click(function(event) {
       $("#filters").fadeOut('400');
       $.post('/getdevices',

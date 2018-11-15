@@ -177,10 +177,14 @@ router.get('/devices', function(req, res) {
 
   var matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
 
+  if (!lastStatus)
+    lastStatus = "Any";
+
   res.render('pages/devices', {
     "sortby": sortingMethod,
     "data": matchingData,
-    "query": query
+    "query": query,
+    "lastStatus": lastStatus
   });
 });
 
@@ -196,10 +200,14 @@ router.post('/devices', urlEncodedParser, (req, res) => {
 
   var matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
 
+  if (!lastStatus)
+    lastStatus = "Any";
+
   res.render('pages/devices', {
     "sortby": sortingMethod,
     "data": matchingData,
-    "query": query
+    "query": query,
+    "lastStatus": lastStatus
   });
 });
 
