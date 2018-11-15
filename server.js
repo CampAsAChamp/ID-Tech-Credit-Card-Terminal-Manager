@@ -26,13 +26,16 @@ var sortingMap = {"mostrecent": mostRecent, "leastrecent": leastRecent};
 
 // TODO: Replace Mock Data with actual data
 var mockData = [];
+var mockDataDict = {};
 var products = ["VP5300", "Augusta S", "VP8800", "VP6300"];
 var loc = ["US-WC-CA-", "US-WC-NV-", "US-WC-OR-", "US-EC-NY-", "US-EC-FL-", "US-EC-MD-"];
 var statuses = ["Connected", "RKI In Progress", "Offline"];
 var start = new Date("01/01/2018"), end = new Date("01/01/2011");
 for (var i = 0; i < 100; ++i) {
+  var devid = loc[i % loc.length] + (300 - i);
+  mockDataDict[devid] = i;
   mockData[i] = {
-    "deviceID" : loc[i % loc.length] + (300 - i),
+    "deviceID" : devid,
     "product" : products[i % products.length],
     "modelNo" : "model" + i,
     "serialNo" : "s" + i,
@@ -239,3 +242,10 @@ router.post('/getdevices', function(req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({ sortby: sortingMethod, data: matchingData }));
 });
+
+router.post('/getdetails', function(req, res) {
+  var deviceID = req.body.deviceID;
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(mockData[mockDataDict[deviceID]]));
+});
+

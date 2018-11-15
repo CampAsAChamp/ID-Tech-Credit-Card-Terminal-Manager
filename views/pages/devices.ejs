@@ -4,6 +4,11 @@
 <head>
   <title>Devices</title>
   <% include ../partials/head %>
+  <style>
+  .key {
+    width: 40%;
+  }
+</style>
 </head>
 
 <body>
@@ -35,7 +40,7 @@
     </div>
     <ul id="results-list" class="base results-list">
       <% for (var i = 0; i < data.length; ++i) { %>
-      <li class="result-holder <%- data[i].lastStatus %>">
+      <li class="result-holder <%- data[i].lastStatus %>" <%- "id='" + data[i].deviceID + "'"%>>
         <span class="result-subtext status">
           <%- data[i].lastStatus %></span>
         <span class="result-name">
@@ -43,6 +48,11 @@
         <br>
         <span class="result-subtext">Last Update
           <%- new Date(data[i].lastHeartbeat).toDateString() %></span>
+        <div style="display:none" class="serialNo" <%- "value='" + data[i].serialNo + "'"%>></div>
+        <div style="display:none" class="modelNo" <%- "value='" + data[i].modelNo + "'"%>></div>
+        <div style="display:none" class="product" <%- "value='" + data[i].product + "'"%>></div>
+        <div style="display:none" class="lastStatus" <%- "value='" + data[i].lastStatus + "'"%>></div>
+        <div style="display:none" class="lastHeartbeat" <%- "value='" + data[i].lastHeartbeat + "'"%>></div>
       </li>
       <% } %>
     </ul>
@@ -83,11 +93,25 @@
     <div class="modal-content">
       <div class="modal-header">
         <span id="close-modal" class="close">&times;</span>
-        <h2>Device: WS345</h2>
+        <h2 class="devid"></h2>
       </div>
       <div class="modal-body">
-        <p>Device ID: </p>
-        <p>Some other text...</p>
+        <div class="entry">
+          <div class="key">Device ID</div>
+          <div class="value devid"></div>
+        </div>
+        <div class="entry">
+          <div class="key">Product</div>
+          <div class="value product"></div>
+        </div>
+        <div class="entry">
+          <div class="key">Serial Number</div>
+          <div class="value serialNo"></div>
+        </div>
+        <div class="entry">
+          <div class="key">Model Number</div>
+          <div class="value modelNo"></div>
+        </div>
       </div>
     </div>
 
@@ -104,7 +128,7 @@
       var statusColor = {"Connected": "#dcffd7", "RKI In Progress": "#fff1c9", "Offline": "#ffc9c9"};
       $(".results-list").empty();
       for (var i = 0; i < entries.length; ++i) {
-        $(".results-list").append('<li class="result-holder" style="background:' + statusColor[entries[i].lastStatus] + '"><span class="result-subtext status">' + entries[i].lastStatus + '</span><span class="result-name">' + entries[i].deviceID + '</span><br><span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toDateString() + '</span></li>');
+        $(".results-list").append('<li class="result-holder" style="background:' + statusColor[entries[i].lastStatus] + '"><span class="result-subtext status">' + entries[i].lastStatus + '</span><span class="result-name">' + entries[i].deviceID + '</span><br><span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toDateString() + '</span><div style="display:none" class="serialNo" value="' + entries[i].serialNo + '"</li>');
       }
       callback();
     }
@@ -142,12 +166,15 @@
               from: $("#from")[0].value,
               to: $("#to")[0].value},
               function(data, textStatus, xhr) {
-                console.log(data.data);
                 updateEntries(data.data);
               });
     });
 
     $(".result-holder").click(function (event) {
+      $(".devid").text($(this)[0].id);
+      $("#myModal").find(".product").text($(this).find(".product").attr('value'));
+      $("#myModal").find(".serialNo").text($(this).find(".serialNo").attr('value'));
+      $("#myModal").find(".modelNo").text($(this).find(".modelNo").attr('value'));
       $("#myModal").fadeIn(400);
     });
 
