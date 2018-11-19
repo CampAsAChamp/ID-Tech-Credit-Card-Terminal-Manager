@@ -1,10 +1,10 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var cookieParser = require('cookie-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
-var app = express();
-var router = express.Router();
+const app = express();
+const router = express.Router();
 
 // Set static files folder
 app.use(express.static('static'));
@@ -13,7 +13,7 @@ app.use(express.static('static'));
 app.set('view engine', 'ejs');
 
 // Mount the router on the app
-var urlEncodedParser = bodyParser.urlencoded({extended: true});
+const urlEncodedParser = bodyParser.urlencoded({extended: true});
 app.use(urlEncodedParser)
 app.use(bodyParser.json())
 app.use(session({secret: "secret key"}));
@@ -22,17 +22,17 @@ app.use('/', router);
 app.listen(3000, function () {
     console.log('Running on port 3000')
 });
-var sortingMap = {"mostrecent": mostRecent, "leastrecent": leastRecent};
+let sortingMap = {"mostrecent": mostRecent, "leastrecent": leastRecent};
 
 // TODO: Replace Mock Data with actual data
-var mockData = [];
-var mockDataDict = {};
-var products = ["VP5300", "Augusta S", "VP8800", "VP6300"];
-var loc = ["US-WC-CA-", "US-WC-NV-", "US-WC-OR-", "US-EC-NY-", "US-EC-FL-", "US-EC-MD-"];
-var statuses = ["Connected", "RKI In Progress", "Offline"];
-var start = new Date("01/01/2018"), end = new Date("01/01/2011");
-for (var i = 0; i < 100; ++i) {
-  var devid = loc[i % loc.length] + (300 - i);
+let mockData = [];
+let mockDataDict = {};
+let products = ["VP5300", "Augusta S", "VP8800", "VP6300"];
+let loc = ["US-WC-CA-", "US-WC-NV-", "US-WC-OR-", "US-EC-NY-", "US-EC-FL-", "US-EC-MD-"];
+let statuses = ["Connected", "RKI In Progress", "Offline"];
+let start = new Date("01/01/2018"), end = new Date("01/01/2011");
+for (let i = 0; i < 100; ++i) {
+  let devid = loc[i % loc.length] + (300 - i);
   mockDataDict[devid] = i;
   mockData[i] = {
     "deviceID" : devid,
@@ -80,7 +80,7 @@ function sortBy(data, sortingFunction, N=30) {
 // that return true/false based 
 function filter(data, conditions) {
   return data.filter(function(entry) {
-    var res = true;
+    let res = true;
     for (let condition of conditions) {
       if (!condition(entry)) {
         res = false;
@@ -104,7 +104,7 @@ function createEQfilter(fieldName, mustEqual) {
 // to allow for no min or max date.
 function createRangeFilter(fieldName, start, end) {
   return function(entry) {
-    var d = new Date(entry[fieldName]);
+    let d = new Date(entry[fieldName]);
     if (!start && !end) {
       return true;
     } 
@@ -121,7 +121,7 @@ function createRangeFilter(fieldName, start, end) {
 }
 
 function getMatchingEntries(data, query, sortingMethod, lastStatus, to, from) {
-  var filters = [];
+  let filters = [];
   if (query)
     filters.push(function(e){ return e["deviceID"].toLowerCase().match(query.toLowerCase()); });
   if (lastStatus && lastStatus != "Any")
@@ -129,7 +129,7 @@ function getMatchingEntries(data, query, sortingMethod, lastStatus, to, from) {
   if (to || from)
     filters.push(createRangeFilter("lastHeartbeat", from, to));
 
-  var matchingData = data;
+  let matchingData = data;
   if (filter.length > 0)
     matchingData = filter(data, filters);
   
@@ -169,7 +169,7 @@ router.post('/login', function(req, res) {
 router.get('/devices', function(req, res) {
 
   // Check for URL Params
-  var query = req.query.q,
+  let query = req.query.q,
       sortingMethod = req.query.sortby,
       lastStatus = req.query.status,
       to = req.query.to,
@@ -178,7 +178,7 @@ router.get('/devices', function(req, res) {
   if (!sortingMethod)
     sortingMethod = "mostrecent";
 
-  var matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
+  let matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
 
   if (!lastStatus)
     lastStatus = "Any";
@@ -192,7 +192,7 @@ router.get('/devices', function(req, res) {
 });
 
 router.post('/devices', urlEncodedParser, (req, res) => {
-  var query = req.body.query,
+  let query = req.body.query,
       sortingMethod = req.body.sortby,
       lastStatus = req.body.lastStatus,
       to = req.body.to,
@@ -201,7 +201,7 @@ router.post('/devices', urlEncodedParser, (req, res) => {
   if (!sortingMethod)
     sortingMethod = "mostrecent";
 
-  var matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
+  let matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
 
   if (!lastStatus)
     lastStatus = "Any";
@@ -230,7 +230,7 @@ router.get('/logout', function(req, res) {
 });
 
 router.post('/getdevices', function(req, res) {
-  var query = req.body.query,
+  let query = req.body.query,
       sortingMethod = req.body.sortby,
       lastStatus = req.body.lastStatus,
       to = req.body.to,
@@ -238,13 +238,13 @@ router.post('/getdevices', function(req, res) {
   if (!sortingMethod)
     sortingMethod = "mostrecent";
 
-  var matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
+  let matchingData = getMatchingEntries(mockData, query, sortingMethod, lastStatus, to, from);
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({ sortby: sortingMethod, data: matchingData }));
 });
 
 router.post('/getdetails', function(req, res) {
-  var deviceID = req.body.deviceID;
+  let deviceID = req.body.deviceID;
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(mockData[mockDataDict[deviceID]]));
 });
