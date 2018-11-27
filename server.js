@@ -62,46 +62,46 @@ for (let i = 0; i < 100; ++i) {
   }
 }
 // End TODO//mockdata[i][lastHeartbeat]
-let months = [0,0,0,0,0,0,0,0,0,0,0,0];
-for(let i = 0; i < 100; ++i){
-    let date = mockData[i].lastHeartbeat;
-    let month = date.substring(4,7);
-    if(month == "Jan"){
-        months[0] += 1;
-    }
-    if(month == "Feb"){
-        months[1] += 1;
-    }
-    if(month == "Mar"){
-        months[2] += 1;
-    }
-    if(month == "Apr"){
-        months[3] += 1;
-    }
-    if(month == "May"){
-        months[4] += 1;
-    }
-    if(month == "Jun"){
-        months[5] += 1;
-    }
-    if(month == "Jul"){
-        months[6] += 1;
-    }
-    if(month == "Aug"){
-        months[7] += 1;
-    }
-    if(month == "Sep"){
-        months[8] += 1;
-    }
-    if(month == "Oct"){
-        months[9] += 1;
-    }
-    if(month == "Nov"){
-        months[10] += 1;
-    }
-    if(month == "Dec"){
-        months[11] += 1;
-    }
+let months = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+for (let i = 0; i < 100; ++i) {
+  let date = mockData[i].lastHeartbeat;
+  let month = date.substring(4, 7);
+  if (month == "Jan") {
+    months[0] += 1;
+  }
+  if (month == "Feb") {
+    months[1] += 1;
+  }
+  if (month == "Mar") {
+    months[2] += 1;
+  }
+  if (month == "Apr") {
+    months[3] += 1;
+  }
+  if (month == "May") {
+    months[4] += 1;
+  }
+  if (month == "Jun") {
+    months[5] += 1;
+  }
+  if (month == "Jul") {
+    months[6] += 1;
+  }
+  if (month == "Aug") {
+    months[7] += 1;
+  }
+  if (month == "Sep") {
+    months[8] += 1;
+  }
+  if (month == "Oct") {
+    months[9] += 1;
+  }
+  if (month == "Nov") {
+    months[10] += 1;
+  }
+  if (month == "Dec") {
+    months[11] += 1;
+  }
 
 }
 console.log(months)
@@ -269,9 +269,9 @@ router.post('/devices', urlEncodedParser, (req, res) => {
 router.get('/', function (req, res) {
   // User is logged in
   if (req.session && req.session.user) {
-      res.render('pages/home', {
-        "months": months,
-      });
+    res.render('pages/home', {
+      "months": months,
+    });
   }
   else {
     // User not logged in
@@ -282,6 +282,11 @@ router.get('/', function (req, res) {
 // Profile Page
 router.get('/profile', function (req, res) {
   res.render('pages/profile');
+});
+
+// Barcode Page
+router.get('/barcode', function (req, res) {
+  res.render('pages/barcode');
 });
 
 // Logout Current User

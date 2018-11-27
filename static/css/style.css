@@ -202,3 +202,10 @@ body {
 }
 
 .modal-body {padding: 2px 16px;}
+
+#camera-btn {
+    margin: auto;
+    transform: translateX(-50%);
+    left: 50%;
+    position: absolute;
+}
