@@ -61,7 +61,50 @@ for (let i = 0; i < 100; ++i) {
     "lastHeartbeat": new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toString()
   }
 }
-// End TODO
+// End TODO//mockdata[i][lastHeartbeat]
+let months = [0,0,0,0,0,0,0,0,0,0,0,0];
+for(let i = 0; i < 100; ++i){
+    let date = mockData[i].lastHeartbeat;
+    let month = date.substring(4,7);
+    if(month == "Jan"){
+        months[0] += 1;
+    }
+    if(month == "Feb"){
+        months[1] += 1;
+    }
+    if(month == "Mar"){
+        months[2] += 1;
+    }
+    if(month == "Apr"){
+        months[3] += 1;
+    }
+    if(month == "May"){
+        months[4] += 1;
+    }
+    if(month == "Jun"){
+        months[5] += 1;
+    }
+    if(month == "Jul"){
+        months[6] += 1;
+    }
+    if(month == "Aug"){
+        months[7] += 1;
+    }
+    if(month == "Sep"){
+        months[8] += 1;
+    }
+    if(month == "Oct"){
+        months[9] += 1;
+    }
+    if(month == "Nov"){
+        months[10] += 1;
+    }
+    if(month == "Dec"){
+        months[11] += 1;
+    }
+
+}
+console.log(months)
 
 // Middleware function checks if user is logged in before accessing a page.
 function requiresLogin(req, res, next) {
@@ -154,17 +197,7 @@ function getMatchingEntries(data, query, sortingMethod, lastStatus, to, from) {
   return sortBy(matchingData, sortingMap[sortingMethod]);
 }
 
-// Home Page
-router.get('/', function (req, res) {
-  // User is logged in
-  if (req.session && req.session.user) {
-    res.render('pages/home');
-  }
-  else {
-    // User not logged in
-    res.redirect('/login');
-  }
-});
+
 
 // Two Factor Authentication
 router.get('/twofact', function (req, res) {
@@ -232,6 +265,20 @@ router.post('/devices', urlEncodedParser, (req, res) => {
   });
 });
 
+// Home Page
+router.get('/', function (req, res) {
+  // User is logged in
+  if (req.session && req.session.user) {
+      res.render('pages/home', {
+        "months": months,
+      });
+  }
+  else {
+    // User not logged in
+    res.redirect('/login');
+  }
+});
+
 // Profile Page
 router.get('/profile', function (req, res) {
   res.render('pages/profile');
@@ -269,4 +316,3 @@ router.post('/getdetails', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(mockData[mockDataDict[deviceID]]));
 });
-

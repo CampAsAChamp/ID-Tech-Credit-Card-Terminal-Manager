@@ -3,7 +3,7 @@
 <head>
   <title>Homepage</title>
   <% include ../partials/head %>
-  <link rel="stylesheet" type="text/css" 
+  <link rel="stylesheet" type="text/css"
   href="/css/profile.css">
 </head>
 <body>
@@ -27,7 +27,7 @@
         </div>
         <script>
 
-            var videoObj    = { "video": true },
+            let videoObj    = { "video": true },
                 errBack        = function(error){
                     // alert("Video capture error: ", error.code);
                 };
@@ -43,7 +43,7 @@
 
             function startWebcam(stream){
 
-                var myOnlineCamera    = getElementById('myOnlineCamera'),
+                let myOnlineCamera    = getElementById('myOnlineCamera'),
                     video            = myOnlineCamera.querySelectorAll('video'),
                     canvas            = myOnlineCamera.querySelectorAll('canvas');
 
@@ -63,12 +63,12 @@
                 // Click to take the photo
                 $('#webcam-popup .takephoto').click(function(){
                     // Copying the image in a temporary canvas
-                    var temp = document.createElement('canvas');
+                    let temp = document.createElement('canvas');
 
                     temp.width  = video.offsetWidth;
                     temp.height = video.offsetHeight;
 
-                    var tempcontext = temp.getContext("2d"),
+                    let tempcontext = temp.getContext("2d"),
                         tempScale = (temp.height/temp.width);
 
                     temp.drawImage(
@@ -81,7 +81,7 @@
                     canvas.style.height    = parseInt( canvas.offsetWidth * tempScale );
                     canvas.width        = canvas.offsetWidth;
                     canvas.height        = canvas.offsetHeight;
-                    var context        = canvas.getContext("2d"),
+                    let context        = canvas.getContext("2d"),
                         scale        = canvas.width/temp.width;
                     context.scale(scale, scale);
                     context.drawImage(bigimage, 0, 0);
@@ -93,6 +93,34 @@
 	</div>
 
 	</center>
+
+    <canvas id = "myChart"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script>
+        let ctx = document.getElementById('myChart').getContext('2d');
+        let chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+
+
+        // The data for our dataset
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"],
+            datasets: [{
+                label: "Devices Online in the past year",
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [<%= months %>],
+            }]
+        },
+
+        // Configuration options go here
+        options: {}
+        });
+    </script>
+
+
 </body>
 
 </html>
