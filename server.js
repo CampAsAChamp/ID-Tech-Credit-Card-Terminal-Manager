@@ -289,6 +289,11 @@ router.get('/barcode', function (req, res) {
   res.render('pages/barcode');
 });
 
+//GPS Page
+router.get('/gps', function (req, res) {
+  res.render('pages/gps');
+});
+
 // Logout Current User
 router.get('/logout', function (req, res) {
   if (req.session) {

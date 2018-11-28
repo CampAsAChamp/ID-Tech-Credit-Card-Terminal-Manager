@@ -11,7 +11,7 @@ function displaySidebar() {
     return false;
   else {
     $(".icon").addClass("close");
-    var buttons = [$("#dash-btn"), $("#profile-btn"), $("#devices-btn"), $("#barcode-btn"), $("#logout-btn")];
+    var buttons = [$("#dash-btn"), $("#profile-btn"), $("#devices-btn"), $("#barcode-btn"), $("#gps-btn"), $("#logout-btn")];
     var contents = "<ul class='side sidenav-list'>";
     for (var button of buttons)
       if (button.length > 0)

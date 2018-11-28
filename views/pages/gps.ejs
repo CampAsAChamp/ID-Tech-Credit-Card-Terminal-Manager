@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Barcode</title>
+  <% include ../partials/head %>
+  
+  <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+</head>
+<body>
+    <div><% include ../partials/header %><div>
+    <br>
+    <br>
+    <br>
+
+    <p>Click to allow GPS</p>
+
+    <button onclick="getLocation()">Allow</button>
+
+    <p id="message" style="text-align:center; opacity: 0;">Click markers to see device name</p>
+
+    <div id="map" style="width: auto; height: 500px;"></div>
+
+  <script>
+        let x = document.getElementById("message");
+        let lat, long;
+        let locations = [
+          ['Device1', 33.6305, -117.8443, '1'],
+          ['Device2', 33.6405, -117.8552, '2'],
+          ['Device3', 33.6505, -117.8649, '3'],
+          ['Device4', 33.6605, -117.8258, '4'],
+          ['Device5', 33.6205, -117.8162, '5'],
+        ];
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else { 
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            x.style.opacity= 1;
+            lat = position.coords.latitude;
+            long = position.coords.longitude;
+           
+            let map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: new google.maps.LatLng(lat, long),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          });
+
+          let infowindow = new google.maps.InfoWindow();
+
+          let marker, i;
+
+          for (i = 0; i < locations.length; i++) {  
+            marker = new google.maps.Marker({
+              position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+              label: locations[i][3],
+              map: map
+            });
+
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+              return function() {
+                infowindow.setContent(locations[i][0]);
+                infowindow.open(map, marker);
+              }
+            })(marker, i));
+          }
+        }
+
+  </script>
+</body>
+</html>
