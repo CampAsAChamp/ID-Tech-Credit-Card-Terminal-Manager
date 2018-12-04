@@ -220,7 +220,8 @@ router.post('/twofact', function (req, res) {
 router.get('/login', function (req, res) {
   let status = true;
   return res.render('pages/login', {
-     "status": status
+     "status": status,
+     "username":""
   });
 });
 router.post('/login', function (req, res) {
@@ -233,9 +234,9 @@ router.post('/login', function (req, res) {
   }
   status = false;
   return res.render('pages/login', {
-     "status": status
+     "status": status,
+     "username": req.session.user.id
   });
-  return res.redirect('/login');
 });
 
 // Device/Event Page

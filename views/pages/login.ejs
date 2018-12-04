@@ -19,13 +19,13 @@
             </div>
             <div style="font-size: 13.5pt;">
                 Username:<br>
-                <input class="text login-field" id="un" type="text" name="username">
+                <input class="text login-field" id="un" type="text" name="username" value="<%-username%>">
                 <br>
                 <br>
                 Password:<br>
                 <input class="text login-field" id="pw" type="password" name="password">
                 <div id="ertext" style="color:red; font-size: 10pt;">
-                  <% if (status == false) { %>
+                  <% if (!status) { %>
                     Incorrect Username or Password
                   <% } %>
                 </div>
