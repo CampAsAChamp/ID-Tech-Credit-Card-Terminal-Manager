@@ -12,9 +12,10 @@
     <br>
     <br>
 
-    <p>Click to allow GPS</p>
-
-    <button onclick="getLocation()">Allow</button>
+    <p align="center">Click to allow GPS</p>
+    <div style="text-align: center;">
+      <button onclick="getLocation()">Allow</button>
+    </div>
 
     <p id="message" style="text-align:center; opacity: 0;">Click markers to see device name</p>
 
@@ -24,12 +25,25 @@
         let x = document.getElementById("message");
         let lat, long;
         let locations = [
-          ['Device1', 33.6305, -117.8443, '1'],
-          ['Device2', 33.6405, -117.8552, '2'],
-          ['Device3', 33.6505, -117.8649, '3'],
+          ['<p><b>RedRobin-1</b></p><p>Model: US-WC-NV-221</p><p>Status: Online</p>', 33.695231, -117.887973, '1'],
+          ['Device2', 33.695231, -117.877881, '2'],
+          ['Device3', 33.685231, -117.887662, '3'],
           ['Device4', 33.6605, -117.8258, '4'],
           ['Device5', 33.6205, -117.8162, '5'],
+          ['Device6', 33.6305, -117.7962, '6'],
+          ['Device7', 33.6405, -117.8392, '7'],
+          ['Device8', 33.6225, -117.9102, '8'],
+          ['Device9', 33.6215, -117.7862, '9'],
         ];
+
+        const icons = {
+          icon: {
+            url: 'https://img.icons8.com/dusk/2x/user-male-circle.png',
+            scaledSize: new google.maps.Size(36,36),
+            origin: new google.maps.Point(0,0),
+            anchor: new google.maps.Point(0,0)
+          }
+        }
 
         function getLocation() {
             if (navigator.geolocation) {
@@ -45,20 +59,26 @@
             long = position.coords.longitude;
            
             let map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 12,
-            center: new google.maps.LatLng(lat, long),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          });
+              zoom: 12,
+              center: new google.maps.LatLng(lat, long),
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
 
-          let infowindow = new google.maps.InfoWindow();
+            let infowindow = new google.maps.InfoWindow();
 
-          let marker, i;
+            let marker, i;
 
-          for (i = 0; i < locations.length; i++) {  
             marker = new google.maps.Marker({
-              position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-              label: locations[i][3],
-              map: map
+                position: new google.maps.LatLng(lat, long),
+                icon: icons.icon,
+                map: map
+            });
+
+            for (i = 0; i < locations.length; i++) {  
+              marker = new google.maps.Marker({
+                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                label: locations[i][3],
+                map: map
             });
 
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
