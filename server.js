@@ -61,6 +61,14 @@ for (let i = 0; i < 100; ++i) {
     "lastHeartbeat": new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toString()
   }
 }
+
+// TODO: Replace Mock Data for users with actual Data
+let mockuser = [];
+let user = ["Roei.Ovadia", "Josh.Lopez", "Nick.Schneider", "Rohit.Sriram", "Jan.Christian", "Darren.Sjafrudin", "Alana.12345", "Steve.12345", "Aaron.12345"];
+for (let i = 0; i < user.length; i++) {
+  mockuser[i] = user[i % user.length]
+}
+
 // End TODO//mockdata[i][lastHeartbeat]
 let months = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 for (let i = 0; i < 100; ++i) {
@@ -197,23 +205,37 @@ function getMatchingEntries(data, query, sortingMethod, lastStatus, to, from) {
   return sortBy(matchingData, sortingMap[sortingMethod]);
 }
 
-
-
 // Two Factor Authentication
 router.get('/twofact', function (req, res) {
   res.render('pages/twofact');
 });
 router.post('/twofact', function (req, res) {
-  res.redirect('/');
+  req.session.auth = { fa: req.body.twofa };
+  if ((req.session.auth.fa).length == 6) {
+    res.redirect('/');
+  }
 });
 
 // Login page
 router.get('/login', function (req, res) {
-  return res.render('pages/login');
+  let status = true;
+  return res.render('pages/login', {
+     "status": status
+  });
 });
 router.post('/login', function (req, res) {
   req.session.user = { id: req.body.username, password: req.body.password };
-  return res.redirect('/twofact');
+  let user_name_and_password = req.session.user.id + "." + req.session.user.password;
+  for (let i = 0; i < mockuser.length; i++) {
+    if (user_name_and_password == mockuser[i]) {
+      return res.redirect('/twofact');
+    }
+  }
+  status = false;
+  return res.render('pages/login', {
+     "status": status
+  });
+  return res.redirect('/login');
 });
 
 // Device/Event Page

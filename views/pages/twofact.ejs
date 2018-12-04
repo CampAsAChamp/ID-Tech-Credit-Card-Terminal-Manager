@@ -13,7 +13,7 @@
         <img class="logo" src="/img/logo-big.png">
       </div>
       <div class="form-holder">
-        <form enctype="application/x-www-form-urlencoded" method="post" class="login-form">
+        <form enctype="application/x-www-form-urlencoded" method="post" class="login-form" onsubmit="return validation();">
             <div class="login-header">
               <h3>Two-Factor Authentication</h3>
             </div>
@@ -21,7 +21,8 @@
                 We have sent a temporary code to <br>
                 xxx-xxx-1234 <br>
                 <br>
-                <input class="text login-field" type="text" name="2fa" maxlength="6" id="auth" placeholder="6-Digit Code">
+                <input class="text login-field" type="text" name="twofa" maxlength="6" id="auth" placeholder="6-Digit Code">
+                <div id="ertext" style="color:red;"></div>
             </div>
             <br>
             <input type="submit" value="Verify" style="width: 120px;">
@@ -30,5 +31,19 @@
   </div>
 
 </body>
+
+<script>
+  function validation() {
+    let twofact = document.getElementById("auth").value;
+    let ertext = document.getElementById("ertext");
+    if (twofact.length < 6) {
+      console.log(twofact.length);
+      ertext.innerHTML = "The Authentication Code must be 6 digits";
+      return false;
+    } else {
+      return true;
+    }
+  }
+</script>
 
 </html>

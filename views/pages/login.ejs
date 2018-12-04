@@ -24,6 +24,11 @@
                 <br>
                 Password:<br>
                 <input class="text login-field" id="pw" type="password" name="password">
+                <div id="ertext" style="color:red; font-size: 10pt;">
+                  <% if (status == false) { %>
+                    Incorrect Username or Password
+                  <% } %>
+                </div>
             </div>
             <br>
             <input type="submit" value="Log In" style="width: 120px;">
