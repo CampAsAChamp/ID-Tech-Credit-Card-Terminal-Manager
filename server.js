@@ -183,7 +183,10 @@ router.get('/twofact', function (req, res) {
 
 router.post('/twofact', function (req, res) {
   req.session.auth = { fa: req.body.twofa };
-  if ((req.session.auth.fa).length == 6) {
+  /*if ((req.session.auth.fa).length == 6) {
+    return res.redirect('/');
+  }*/
+  if ((req.session.auth.fa) == two_fact_code || (req.session.auth.fa) == two_fact_default ) {
     return res.redirect('/');
   }
 
@@ -216,6 +219,8 @@ router.get('/login', function (req, res) {
   });
 });
 
+const two_fact_code = Math.floor(Math.random() * 999999) + 100000
+const two_fact_default = 837412
 router.post('/login', function (req, res) {
   req.session.user = { id: req.body.username, password: req.body.password };
   let user_name_and_password = req.session.user.id + "." + req.session.user.password;
@@ -225,7 +230,8 @@ router.post('/login', function (req, res) {
     //… will send a SMS with a PIN code to the number!
 
     const from = '18452531040'; //nexmo number
-    const text = 'ID TECH Code is 837412  ';
+
+      const text = 'ID TECH Code is '+ two_fact_code;
     nexmo.message.sendSms(from, phoneNumber, text);
     nexmo.verify.request({number: phoneNumber, brand: 'ID TECH', code_length: 6},
       (err, result) => {

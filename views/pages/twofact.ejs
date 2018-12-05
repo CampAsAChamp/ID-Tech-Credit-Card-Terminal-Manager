@@ -40,9 +40,17 @@
       console.log(twofact.length);
       ertext.innerHTML = "The Authentication Code must be 6 digits";
       return false;
-    } else {
+    }
+
+    else if (twofact!= two_fact_code || twofact!=two_fact_default) {
+        console.log('Enter 837412 to access')
+        ertext.innerHTML = "The Authentication Code is incorrect";
+        return false;
+    }
+    else {
       return true;
     }
+
   }
 </script>
 
