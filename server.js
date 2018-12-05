@@ -40,7 +40,10 @@ app.set('view engine', 'ejs');
 const urlEncodedParser = bodyParser.urlencoded({ extended: true });
 app.use(urlEncodedParser)
 app.use(bodyParser.json())
-app.use(session({ secret: "secret key" }));
+app.use(session({ secret: "secret key",
+                  resave: true,
+                  saveUninitialized: true
+                }));
 app.use('/', router);
 
 app.listen(3000, function () {
@@ -118,7 +121,6 @@ for (let i = 0; i < 100; ++i) {
   }
 
 }
-console.log(months)
 
 // Middleware function checks if user is logged in before accessing a page.
 function requiresLogin(req, res, next) {
@@ -215,30 +217,31 @@ function getMatchingEntries(data, query, sortingMethod, lastStatus, to, from) {
 router.get('/twofact', function (req, res) {
   res.render('pages/twofact');
 });
+
 router.post('/twofact', function (req, res) {
   req.session.auth = { fa: req.body.twofa };
   if ((req.session.auth.fa).length == 6) {
-    res.redirect('/');
+    return res.redirect('/');
   }
 
-    let pin = req.body.pin;
-    let requestId = req.body.requestId;
 
-    nexmo.verify.check({request_id: requestId, code: pin}, (err, result) => {
-        if(err) {
-            // handle the error
-            res.redirect('/');
-        } else {
-            if(result && result.status == '0') { // Success!
-                res.status(200).send('Account verified!');
-                //res.render('status', {message: 'Account verified! '});
-                res.redirect('/'); //take them to home page
-            } else {
-                // handle the error - e.g. wrong PIN
-                //return them to twofact page with error message
-            }
-        }
-    });
+  // let pin = req.body.pin;
+  // let requestId = req.body.requestId;
+
+  // nexmo.verify.check({request_id: requestId, code: pin}, (err, result) => {
+  //     if(err) {
+  //         // handle the error
+  //         return res.redirect('/');
+  //     } else {
+  //         if(result && result.status == '0') { // Success!
+  //             // success!
+  //             return res.redirect('/'); //take them to home page
+  //         } else {
+  //             // handle the error - e.g. wrong PIN
+  //             return res.redirect('/');
+  //         }
+  //     }
+  // });
 });
 
 // Login page
@@ -249,49 +252,53 @@ router.get('/login', function (req, res) {
      "username":""
   });
 });
+
 router.post('/login', function (req, res) {
   req.session.user = { id: req.body.username, password: req.body.password };
   let user_name_and_password = req.session.user.id + "." + req.session.user.password;
+  if (validateLogin(user_name_and_password))
+  {
+    const phoneNumber =  19257195064; //req.body.number; Roei's phone number josh
+    //… will send a SMS with a PIN code to the number!
 
-
-
-  for (let i = 0; i < mockuser.length; i++) {
-    if (user_name_and_password == mockuser[i]) { //if user name and password is match, text them code
-        let phoneNumber =  19162188231; //req.body.number; Roei's phone number josh
-        //… will send a SMS with a PIN code to the number!
-        console.log(phoneNumber);
-        //const from = '18452531040' //nexmo number
-       // const text= 'ID TECH Code is '
-        // nexmo.message.sendSms(from, phoneNumber, text)
-        nexmo.verify.request({number: phoneNumber, brand: 'ID TECH', code_length: 6}, (err,
-                                                                                       result) => {
-
-            if(err) {
-                res.sendStatus(500);
-
+    const from = '18452531040'; //nexmo number
+    const text = 'ID TECH Code is ';
+    nexmo.message.sendSms(from, phoneNumber, text);
+    nexmo.verify.request({number: phoneNumber, brand: 'ID TECH', code_length: 6},
+      (err, result) => {
+        if(err) {
+            return res.render('pages/login', {
+               "status": true,
+               "username": req.session.user.id
+            });
+        } else {
+            console.log('Sent code to ' + phoneNumber);
+            let requestId = result.request_id;
+            if(result.status == '0') {
+                console.log('Sent code to ' + phoneNumber); //josh
+                return res.redirect("/twofact?requestId=" + requestId);
             } else {
-                let requestId = result.request_id;
-                if(result.status == '0') {
-                    console.log('if here then it works'); //josh
-                    res.render('pages/twofact', {requestId: requestId}); // Success! Now, have your user enter the PIN (take them to 2FA page)
-
-                } else {
-                    console.log('crashes'); //josh
-                   // res.status(401).send(result.error_text);
-                }
+                console.log('Alternative');
+                return res.redirect("/twofact?requestId=" + requestId);
             }
-        });
-      return res.redirect('/twofact');
-    }
+        }
+    });
   }
-  status = false;
-  return res.render('pages/login', {
-     "status": status,
-     "username": req.session.user.id
-  });
-
-
+  else
+  {
+    return res.render('pages/login', {
+               "status": false,
+               "username": req.session.user.id
+            });
+  }
 });
+
+// FIXME: Checks if credentials match any of our mock users.
+// Needs to do actual authentication
+function validateLogin(credentials)
+{
+  return !(mockuser.indexOf(credentials) === -1)
+}
 
 // Device/Event Page
 router.get('/devices', function (req, res) {
