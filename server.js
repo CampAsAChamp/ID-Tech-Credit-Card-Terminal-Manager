@@ -221,11 +221,11 @@ router.post('/login', function (req, res) {
   let user_name_and_password = req.session.user.id + "." + req.session.user.password;
   if (validateLogin(user_name_and_password))
   {
-    const phoneNumber =  19257195064; //req.body.number; Roei's phone number josh
+    const phoneNumber =  19162188231;//19257195064; //req.body.number; Roei's phone number josh
     //… will send a SMS with a PIN code to the number!
 
     const from = '18452531040'; //nexmo number
-    const text = 'ID TECH Code is ';
+    const text = 'ID TECH Code is 837412  ';
     nexmo.message.sendSms(from, phoneNumber, text);
     nexmo.verify.request({number: phoneNumber, brand: 'ID TECH', code_length: 6},
       (err, result) => {
@@ -373,49 +373,3 @@ router.post('/getdetails', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(mockData[mockDataDict[deviceID]]));
 });
-
-
-//2FA
-/*
-router.post('/login', (req, res) => {
-    let phoneNumber =  19162188231; //req.body.number; Roei's phone number
-    //… will send a SMS with a PIN code to the number!
-    console.log(phoneNumber);
-    const from = '18452531040' //nexmo number
-    const text= 'ID TECH Code is '
-    nexmo.message.sendSms(from, phoneNumber, text)
-    nexmo.verify.request({number: phoneNumber, brand: 'ID TECH', code_length: 6}, (err,
-                                                                           result) => {
-
-        if(err) {
-            res.sendStatus(500);
-        } else {
-            let requestId = result.request_id;
-            if(result.status == '0') {
-                res.render('verify', {requestId: requestId}); // Success! Now, have your user enter the PIN
-
-            } else {
-                res.status(401).send(result.error_text);
-            }
-        }
-    });
-});
-
-router.post('/verify', (req, res) => {
-    let pin = req.body.pin;
-    let requestId = req.body.requestId;
-
-    nexmo.verify.check({request_id: requestId, code: pin}, (err, result) => {
-        if(err) {
-            // handle the error
-        } else {
-            if(result && result.status == '0') { // Success!
-                res.status(200).send('Account verified!');
-                //res.render('status', {message: 'Account verified! '});
-                res.render('pages/home');
-            } else {
-                // handle the error - e.g. wrong PIN
-            }
-        }
-    });
-});*/
