@@ -2,6 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const Nexmo = require('nexmo');
+const nexmo = new Nexmo({
+    apiKey: '9ee4a85f',
+    apiSecret: '423HmKFXkOpy0nRX'
+});
+
 
 /*
   We don't need to make a router, just attack it to the app object
@@ -214,6 +220,25 @@ router.post('/twofact', function (req, res) {
   if ((req.session.auth.fa).length == 6) {
     res.redirect('/');
   }
+
+    let pin = req.body.pin;
+    let requestId = req.body.requestId;
+
+    nexmo.verify.check({request_id: requestId, code: pin}, (err, result) => {
+        if(err) {
+            // handle the error
+            res.redirect('/');
+        } else {
+            if(result && result.status == '0') { // Success!
+                res.status(200).send('Account verified!');
+                //res.render('status', {message: 'Account verified! '});
+                res.redirect('/'); //take them to home page
+            } else {
+                // handle the error - e.g. wrong PIN
+                //return them to twofact page with error message
+            }
+        }
+    });
 });
 
 // Login page
@@ -227,8 +252,35 @@ router.get('/login', function (req, res) {
 router.post('/login', function (req, res) {
   req.session.user = { id: req.body.username, password: req.body.password };
   let user_name_and_password = req.session.user.id + "." + req.session.user.password;
+
+
+
   for (let i = 0; i < mockuser.length; i++) {
-    if (user_name_and_password == mockuser[i]) {
+    if (user_name_and_password == mockuser[i]) { //if user name and password is match, text them code
+        let phoneNumber =  19162188231; //req.body.number; Roei's phone number josh
+        //… will send a SMS with a PIN code to the number!
+        console.log(phoneNumber);
+        //const from = '18452531040' //nexmo number
+       // const text= 'ID TECH Code is '
+        // nexmo.message.sendSms(from, phoneNumber, text)
+        nexmo.verify.request({number: phoneNumber, brand: 'ID TECH', code_length: 6}, (err,
+                                                                                       result) => {
+
+            if(err) {
+                res.sendStatus(500);
+
+            } else {
+                let requestId = result.request_id;
+                if(result.status == '0') {
+                    console.log('if here then it works'); //josh
+                    res.render('pages/twofact', {requestId: requestId}); // Success! Now, have your user enter the PIN (take them to 2FA page)
+
+                } else {
+                    console.log('crashes'); //josh
+                   // res.status(401).send(result.error_text);
+                }
+            }
+        });
       return res.redirect('/twofact');
     }
   }
@@ -237,6 +289,8 @@ router.post('/login', function (req, res) {
      "status": status,
      "username": req.session.user.id
   });
+
+
 });
 
 // Device/Event Page
@@ -349,3 +403,49 @@ router.post('/getdetails', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(mockData[mockDataDict[deviceID]]));
 });
+
+
+//2FA
+/*
+router.post('/login', (req, res) => {
+    let phoneNumber =  19162188231; //req.body.number; Roei's phone number
+    //… will send a SMS with a PIN code to the number!
+    console.log(phoneNumber);
+    const from = '18452531040' //nexmo number
+    const text= 'ID TECH Code is '
+    nexmo.message.sendSms(from, phoneNumber, text)
+    nexmo.verify.request({number: phoneNumber, brand: 'ID TECH', code_length: 6}, (err,
+                                                                           result) => {
+
+        if(err) {
+            res.sendStatus(500);
+        } else {
+            let requestId = result.request_id;
+            if(result.status == '0') {
+                res.render('verify', {requestId: requestId}); // Success! Now, have your user enter the PIN
+
+            } else {
+                res.status(401).send(result.error_text);
+            }
+        }
+    });
+});
+
+router.post('/verify', (req, res) => {
+    let pin = req.body.pin;
+    let requestId = req.body.requestId;
+
+    nexmo.verify.check({request_id: requestId, code: pin}, (err, result) => {
+        if(err) {
+            // handle the error
+        } else {
+            if(result && result.status == '0') { // Success!
+                res.status(200).send('Account verified!');
+                //res.render('status', {message: 'Account verified! '});
+                res.render('pages/home');
+            } else {
+                // handle the error - e.g. wrong PIN
+            }
+        }
+    });
+});*/
