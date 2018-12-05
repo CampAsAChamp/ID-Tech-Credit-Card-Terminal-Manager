@@ -79,47 +79,10 @@ for (let i = 0; i < user.length; i++) {
 }
 
 // End TODO//mockdata[i][lastHeartbeat]
-let months = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-for (let i = 0; i < 100; ++i) {
+let months = new Array(12).fill(0);
+for (let i = 0; i < mockData.length; ++i) {
   let date = mockData[i].lastHeartbeat;
-  let month = date.substring(4, 7);
-  if (month == "Jan") {
-    months[0] += 1;
-  }
-  if (month == "Feb") {
-    months[1] += 1;
-  }
-  if (month == "Mar") {
-    months[2] += 1;
-  }
-  if (month == "Apr") {
-    months[3] += 1;
-  }
-  if (month == "May") {
-    months[4] += 1;
-  }
-  if (month == "Jun") {
-    months[5] += 1;
-  }
-  if (month == "Jul") {
-    months[6] += 1;
-  }
-  if (month == "Aug") {
-    months[7] += 1;
-  }
-  if (month == "Sep") {
-    months[8] += 1;
-  }
-  if (month == "Oct") {
-    months[9] += 1;
-  }
-  if (month == "Nov") {
-    months[10] += 1;
-  }
-  if (month == "Dec") {
-    months[11] += 1;
-  }
-
+  months[new Date(date).getMonth()]++;
 }
 
 // Middleware function checks if user is logged in before accessing a page.
