@@ -30,7 +30,7 @@
 
     <!-- Include the image-diff library -->
     <script>
-        var _scannerIsRunning = false;
+        let _scannerIsRunning = false;
 
         function startScanner() {
             Quagga.init({
@@ -49,8 +49,8 @@
                         "code_128_reader",
                         // "ean_reader",
                         // "ean_8_reader",
-                        // "code_39_reader",
-                        // "code_39_vin_reader",
+                        //"code_39_reader",
+                        //"code_39_vin_reader",
                         // "codabar_reader",
                         // "upc_reader",
                         // "upc_e_reader",
@@ -86,7 +86,7 @@
             });
 
             Quagga.onProcessed(function (result) {
-                var drawingCtx = Quagga.canvas.ctx.overlay,
+                let drawingCtx = Quagga.canvas.ctx.overlay,
                     drawingCanvas = Quagga.canvas.dom.overlay;
 
                 if (result) {
@@ -112,7 +112,7 @@
 
             Quagga.onDetected(function (result) {
                 console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
-                $.post('/exists', {"id": result.codeResult.code}, function(data, textStatus, xhr) {
+                $.post('/exists', { "id": result.codeResult.code }, function (data, textStatus, xhr) {
                     if (data["Result"]) {
                         window.location.href = "/devices?q=" + result.codeResult.code;
                     }
