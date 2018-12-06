@@ -395,3 +395,11 @@ router.post('/getdetails', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(mockData[mockDataDict[deviceID]]));
 });
+
+
+router.post('/exists', function (req, res) {
+  let deviceID = req.body.id;
+  res.setHeader('Content-Type', 'application/json');
+  let res = (deviceID in mockDataDict);
+  res.send(JSON.stringify({"Result":res});
+});
