@@ -47,14 +47,14 @@
                 decoder: {
                     readers: [
                         "code_128_reader",
-                        "ean_reader",
-                        "ean_8_reader",
-                        "code_39_reader",
-                        "code_39_vin_reader",
-                        "codabar_reader",
-                        "upc_reader",
-                        "upc_e_reader",
-                        "i2of5_reader"
+                        // "ean_reader",
+                        // "ean_8_reader",
+                        // "code_39_reader",
+                        // "code_39_vin_reader",
+                        // "codabar_reader",
+                        // "upc_reader",
+                        // "upc_e_reader",
+                        // "i2of5_reader"
                     ],
                     debug: {
                         showCanvas: true,
@@ -112,6 +112,9 @@
 
             Quagga.onDetected(function (result) {
                 console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
+                $.post('/exists', {"id": result}, function(data, textStatus, xhr) {
+                    console.log(data);
+                });
             });
         }
 

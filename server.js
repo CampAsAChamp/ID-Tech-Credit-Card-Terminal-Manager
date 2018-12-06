@@ -400,6 +400,6 @@ router.post('/getdetails', function (req, res) {
 router.post('/exists', function (req, res) {
   let deviceID = req.body.id;
   res.setHeader('Content-Type', 'application/json');
-  let res = (deviceID in mockDataDict);
-  res.send(JSON.stringify({"Result":res});
+  let devExists = (deviceID in mockDataDict);
+  res.send(JSON.stringify({"Result" : devExists}));
 });
