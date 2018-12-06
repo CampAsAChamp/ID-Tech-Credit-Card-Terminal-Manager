@@ -2,12 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const Nexmo = require('nexmo');
+
+/*const Nexmo = require('nexmo');
 const nexmo = new Nexmo({
     apiKey: '9ee4a85f',
     apiSecret: '423HmKFXkOpy0nRX'
-});
+});*/
 
+const accountSID = 'AC364d60805e19f157a070602339c70321'
+const authToken = 'dd8995738102e7e5a59f96ee06621ab8'
+
+const client = require('twilio')(accountSID, authToken);
 
 /*
   We don't need to make a router, just attack it to the app object
@@ -176,20 +181,25 @@ function getMatchingEntries(data, query, sortingMethod, lastStatus, to, from) {
   return sortBy(matchingData, sortingMap[sortingMethod]);
 }
 
+const two_fact_code = Math.floor(100000 + Math.random() * 900000);
 // Two Factor Authentication
 router.get('/twofact', function (req, res) {
-  res.render('pages/twofact');
+  let stats = true; //First time loading the twofact page
+  return res.render('pages/twofact', {
+    "stats": stats
+  });
 });
 
 router.post('/twofact', function (req, res) {
   req.session.auth = { fa: req.body.twofa };
-  /*if ((req.session.auth.fa).length == 6) {
+  if ((req.session.auth.fa) == two_fact_code) {
     return res.redirect('/');
-  }*/
-  if ((req.session.auth.fa) == two_fact_code || (req.session.auth.fa) == two_fact_default ) {
-    return res.redirect('/');
+  } else {
+    return res.render('pages/twofact', {
+      "stats": false
+    });
+    return res.redirect('/twofact');
   }
-
 
   // let pin = req.body.pin;
   // let requestId = req.body.requestId;
@@ -219,19 +229,32 @@ router.get('/login', function (req, res) {
   });
 });
 
-const two_fact_code = Math.floor(Math.random() * 999999) + 100000
-const two_fact_default = 837412
 router.post('/login', function (req, res) {
   req.session.user = { id: req.body.username, password: req.body.password };
   let user_name_and_password = req.session.user.id + "." + req.session.user.password;
   if (validateLogin(user_name_and_password))
   {
-    const phoneNumber =  19162188231;//19257195064; //req.body.number; Roei's phone number josh
+    client.messages.create({
+        to: '+14155219965', //Put your phone number here //Darren's phone number
+        from: '+13235249946',
+        body: 'ID TECH Authentication Code is ' + two_fact_code
+      })
+      .then((message) => console.log(message.sid));
+      return res.redirect('/twofact');
+  } else {
+    return res.render('pages/login', {
+      "status": false,
+      "username": req.session.user.id
+   });
+  }
+
+    /*const phoneNumber =  14155219965;//19162188231;//19257195064; //req.body.number; Roei's phone number josh
     //… will send a SMS with a PIN code to the number!
 
     const from = '18452531040'; //nexmo number
 
-      const text = 'ID TECH Code is '+ two_fact_code;
+    const text = 'ID TECH Code is ' + two_fact_code;
+    console.log(two_fact_code);
     nexmo.message.sendSms(from, phoneNumber, text);
     nexmo.verify.request({number: phoneNumber, brand: 'ID TECH', code_length: 6},
       (err, result) => {
@@ -251,15 +274,8 @@ router.post('/login', function (req, res) {
                 return res.redirect("/twofact?requestId=" + requestId);
             }
         }
-    });
-  }
-  else
-  {
-    return res.render('pages/login', {
-               "status": false,
-               "username": req.session.user.id
-            });
-  }
+    });*/
+
 });
 
 // FIXME: Checks if credentials match any of our mock users.
