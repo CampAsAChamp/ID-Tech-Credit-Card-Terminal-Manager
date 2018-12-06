@@ -112,8 +112,10 @@
 
             Quagga.onDetected(function (result) {
                 console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
-                $.post('/exists', {"id": result}, function(data, textStatus, xhr) {
-                    console.log(data);
+                $.post('/exists', {"id": result.codeResult.code}, function(data, textStatus, xhr) {
+                    if (data["Result"]) {
+                        window.location.href = "/devices?q=" + result.codeResult.code;
+                    }
                 });
             });
         }
