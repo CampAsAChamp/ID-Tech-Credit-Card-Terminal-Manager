@@ -30,7 +30,7 @@
 
     <!-- Include the image-diff library -->
     <script>
-        let _scannerIsRunning = false;
+        var _scannerIsRunning = false;
 
         function startScanner() {
             Quagga.init({
@@ -78,7 +78,7 @@
                     return
                 }
 
-                console.log("Initialization finished. Ready to start");
+                //console.log("Initialization finished. Ready to start");
                 Quagga.start();
 
                 // Set flag to is running
@@ -86,7 +86,7 @@
             });
 
             Quagga.onProcessed(function (result) {
-                let drawingCtx = Quagga.canvas.ctx.overlay,
+                var drawingCtx = Quagga.canvas.ctx.overlay,
                     drawingCanvas = Quagga.canvas.dom.overlay;
 
                 if (result) {
