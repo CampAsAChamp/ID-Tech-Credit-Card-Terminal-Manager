@@ -74,11 +74,11 @@
       <h5 style="margin-bottom:8px;">Last Heartbeat</h5>
       <div>
         <div class="entry">
-          <span class="key">After</span>
+          <span class="key">Start</span>
           <input style="height: 1.8em" class="text value" type="date" id="from" name="from">
         </div>
         <div>
-          <span class="key">Before</span>
+          <span class="key">End</span>
           <input style="height: 1.8em" class="text value" type="date" id="to" name="to">
         </div>
       </div>
@@ -128,7 +128,7 @@
       var statusColor = {"Connected": "#dcffd7", "RKI In Progress": "#fff1c9", "Offline": "#ffc9c9"};
       $(".results-list").empty();
       for (var i = 0; i < entries.length; ++i) {
-        $(".results-list").append('<li class="result-holder" style="background:' + statusColor[entries[i].lastStatus] + '"><span class="result-subtext status">' + entries[i].lastStatus + '</span><span class="result-name">' + entries[i].deviceID + '</span><br><span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toDateString() + '</span><div style="display:none" class="serialNo" value="' + entries[i].serialNo + '"</li>');
+        $(".results-list").append('<li class="result-holder" style="background:' + statusColor[entries[i].lastStatus] + '"><span class="result-subtext status">' + entries[i].lastStatus + '</span><span class="result-name">' + entries[i].deviceID + '</span><br><span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toDateString() + '</span><div style="display:none" class="serialNo" value="' + entries[i].serialNo + '"<div style="display:none" class="modelNo">' + entries[i].modelNo + '</div></li>');
       }
       callback();
     }
