@@ -120,29 +120,50 @@
 
   <script>
     function attachClickListeners() {
-      $(".result-holder").click(
-        ()=>{$("#myModal").fadeIn(400);}
-      );
+      $(".result-holder").click(function(e){
+        $(".devid").text($(this)[0].id);
+        $("#myModal").find(".product").text($(this).find(".product").attr('value'));
+        $("#myModal").find(".serialNo").text($(this).find(".serialNo").attr('value'));
+        $("#myModal").find(".modelNo").text($(this).find(".modelNo").attr('value'));
+        $("#myModal").fadeIn(400);
+      });
     }
     function updateEntries(entries, callback=attachClickListeners) {
-      var statusColor = {"Connected": "#dcffd7", "RKI In Progress": "#fff1c9", "Offline": "#ffc9c9"};
+      const statusColor = {"Connected": "#dcffd7", "RKI In Progress": "#fff1c9", "Offline": "#ffc9c9"};
       $(".results-list").empty();
-      for (var i = 0; i < entries.length; ++i) {
-        $(".results-list").append('<li class="result-holder" style="background:' + statusColor[entries[i].lastStatus] + '"><span class="result-subtext status">' + entries[i].lastStatus + '</span><span class="result-name">' + entries[i].deviceID + '</span><br><span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toDateString() + '</span><div style="display:none" class="serialNo" value="' + entries[i].serialNo + '"<div style="display:none" class="modelNo">' + entries[i].modelNo + '</div></li>');
+      for (let i = 0; i < entries.length; ++i) {
+        $(".results-list").append('<li class="result-holder" id="' + entries[i].deviceID + '" style="background:' + statusColor[entries[i].lastStatus] + '">' +
+          '<span class="result-subtext status">' + entries[i].lastStatus + '</span>' +
+          '<span class="result-name">' + entries[i].deviceID + '</span><br>' +
+          '<span class="result-subtext">Last Update ' + new Date(entries[i].lastHeartbeat).toDateString() + '</span>' +
+          '<div style="display:none" class="serialNo" value="' + entries[i].serialNo + '"></div>' + 
+          '<div style="display:none" class="modelNo">' + entries[i].modelNo + '</div>' + 
+          '<div style="display:none" class="product">' + entries[i].product + '</div>' + 
+          '<div style="display:none" class="lastStatus">' + entries[i].lastStatus + '</div>' + 
+          '<div style="display:none" class="lastHeartbeat">' + entries[i].lastHeartbeat + '</div>' + 
+          '</li>');
       }
       callback();
     }
+
+    // Automatically change sorting method when sort dropdown is changed
     $("#sortby").change(function(event) {
       $("#sort-by-form").submit();
     });
+
+    // Open filters popup when button is clicked
     $("#addfilter").click(function(event) {
       $("#filters").fadeIn('400');
       return false;
     });
+
+    // Close filters popup when button is clicked
     $("#closefilters").click(function(event) {
       $("#filters").fadeOut('400');
       return false;
     });
+
+    // Automatically search when input is changed in search bar
     $("#query").on("input", function(e) {
       var input = $(this);
       var val = input.val();
@@ -159,6 +180,7 @@
     });
     $("#applyfilters").click(function(event) {
       $("#filters").fadeOut('400');
+      window.location.href = "/devices?q=" + result.codeResult.code;
       $.post('/getdevices',
              {query: $("#query")[0].value,
               sortby: $("#sortby")[0].value,
