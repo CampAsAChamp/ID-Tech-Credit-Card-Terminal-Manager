@@ -50,7 +50,7 @@ app.use('/', router);
 app.listen(3000, function () {
   console.log('Running on port 3000')
 });
-let sortingMap = { "mostrecent": mostRecent, "leastrecent": leastRecent };
+const sortingMap = { "mostrecent": mostRecent, "leastrecent": leastRecent };
 
 // TODO: Replace Mock Data with actual data
 let mockData = [];
@@ -79,14 +79,17 @@ for (let i = 0; i < user.length; i++) {
   mockuser[i] = user[i % user.length]
 }
 
-// End TODO//mockdata[i][lastHeartbeat]
+// Parse months into array of ints for Chart.js on dashboard
 let months = new Array(12).fill(0);
 for (let i = 0; i < mockData.length; ++i) {
   let date = mockData[i].lastHeartbeat;
   months[new Date(date).getMonth()]++;
 }
+// End TODO
+
 
 // Middleware function checks if user is logged in before accessing a page.
+// TODO: All pages are accessible without logging in (except homepage)
 function requiresLogin(req, res, next) {
   if (req.session && req.session.userId) {
     return next();
@@ -134,10 +137,9 @@ function filter(data, conditions) {
 
 // Utility function creates filter that ensures a
 // field is equal to a specified value
-function createEQfilter(fieldName, mustEqual) {
-  return function (entry) {
-    return entry[fieldName].toLowerCase() == mustEqual.toLowerCase();
-  };
+function createEQfilter(fieldName, mustEqual)
+{
+  return (entry) => entry[fieldName].toLowerCase() == mustEqual.toLowerCase();
 }
 
 // Utility function creates filter that ensures a
@@ -161,6 +163,7 @@ function createRangeFilter(fieldName, start, end) {
   }
 }
 
+// Sort and filter data using optional parameters
 function getMatchingEntries(data, query, sortingMethod, lastStatus, to, from) {
   let filters = [];
   if (query)
@@ -179,6 +182,7 @@ function getMatchingEntries(data, query, sortingMethod, lastStatus, to, from) {
 
 const two_fact_code = Math.floor(100000 + Math.random() * 900000);
 const two_fact_default = 837412;
+
 // Two Factor Authentication
 router.get('/twofact', function (req, res) {
   let stats = true; //First time loading the twofact page
@@ -189,13 +193,15 @@ router.get('/twofact', function (req, res) {
 
 router.post('/twofact', function (req, res) {
   req.session.auth = { fa: req.body.twofa };
-  if ((req.session.auth.fa) == two_fact_code || (req.session.auth.fa) == two_fact_default) {
+  if ((req.session.auth.fa) == two_fact_code || (req.session.auth.fa) == two_fact_default)
+  {
     return res.redirect('/');
-  } else {
+  }
+  else
+  {
     return res.render('pages/twofact', {
       "stats": false
     });
-    return res.redirect('/twofact');
   }
 
  
@@ -215,8 +221,8 @@ router.post('/login', function (req, res) {
   let user_name_and_password = req.session.user.id + "." + req.session.user.password;
   if (validateLogin(user_name_and_password))
   {
-	const from = '18452531040'; //nexmo number
-	const phoneNumber= 19162188231;
+    const from = '18452531040'; //nexmo number
+	  const phoneNumber= 19162188231;
 
     const text = 'ID TECH Code is ' + two_fact_code;
     console.log(two_fact_code);
@@ -242,12 +248,13 @@ function validateLogin(credentials)
 router.get('/devices', function (req, res) {
 
   // Check for URL Params
-  let query = req.query.q,
+  let query = req.query.query,
     sortingMethod = req.query.sortby,
-    lastStatus = req.query.status,
+    lastStatus = req.query.lastStatus,
     to = req.query.to,
     from = req.query.from;
 
+  // Default sorting method is by most recent
   if (!sortingMethod)
     sortingMethod = "mostrecent";
 
@@ -293,6 +300,10 @@ router.get('/', function (req, res) {
   if (req.session && req.session.user) {
     res.render('pages/home', {
       "months": months,
+      "total": mockData.length,
+      "online": 51,
+      "offline": 10,
+      "alerts": 0
     });
   }
   else {
@@ -326,15 +337,15 @@ router.get('/logout', function (req, res) {
   }
 });
 
-// TODO: Don't use a post request to get data
-// Always use post to create data
-// Get for requesting data
-router.post('/getdevices', function (req, res) {
-  let query = req.body.query,
-    sortingMethod = req.body.sortby,
-    lastStatus = req.body.lastStatus,
-    to = req.body.to,
-    from = req.body.from;
+
+// Get for requesting data as JSON
+// URL params can be provided for filtering/searching
+router.get('/d', function (req, res) {
+  let query = req.query.query,
+    sortingMethod = req.query.sortby,
+    lastStatus = req.query.lastStatus,
+    to = req.query.to,
+    from = req.query.from;
   if (!sortingMethod)
     sortingMethod = "mostrecent";
 
@@ -343,13 +354,7 @@ router.post('/getdevices', function (req, res) {
   res.send(JSON.stringify({ sortby: sortingMethod, data: matchingData }));
 });
 
-router.post('/getdetails', function (req, res) {
-  let deviceID = req.body.deviceID;
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify(mockData[mockDataDict[deviceID]]));
-});
-
-
+// Checks if device exists (used for barcode scanner)
 router.post('/exists', function (req, res) {
   let deviceID = req.body.id;
   res.setHeader('Content-Type', 'application/json');

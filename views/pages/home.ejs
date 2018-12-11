@@ -13,12 +13,12 @@
         <div style="background: none" class="info-holder">
             <h3 style="margin-bottom: 8px;position:relative; text-align: left;">Terminal Management System</h3>
             <div class="entry">
-                <span class="tms-detail">Deployed Devices: <a href="/devices">1738</a></span>
+                <span class="tms-detail">Deployed Devices: <a href="/devices"><%- total %></a></span>
             </div>
             <div class="entry">
-                <span class="tms-detail">Online: <a href="/devices?status=Connected">51</a></span>
-                <span class="tms-detail">Offline: <a href="/devices?status=Offline">10</a></span>
-                <span class="tms-detail">Alerts: <a>0</a></span>
+                <span class="tms-detail">Online: <a href="/devices?lastStatus=Connected"><%- online %></a></span>
+                <span class="tms-detail">Offline: <a href="/devices?lastStatus=Offline"><%- offline %></a></span>
+                <span class="tms-detail">Alerts: <a><%- alerts %></a></span>
             </div>
         </div>
 
