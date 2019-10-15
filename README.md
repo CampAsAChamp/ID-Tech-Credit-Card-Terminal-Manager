@@ -1,2 +1,2 @@
 # IDTech
-Our Informatics 117 project repository
+Project repository
