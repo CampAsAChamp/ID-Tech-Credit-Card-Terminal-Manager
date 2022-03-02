@@ -9,8 +9,7 @@
 
 <h3 align="center">ID Tech Credit Card Terminal Manager</h3>
 
-  <p align="center">
-    Pick an image and this program will recreate that image using Microsoft Paint.
+  <p align="center">Mobile web application that enables customers to easily monitor and control their ID Tech payment devices and chip readers. The app pulls device status information in real-time and allows for users to perform remote firmware updates, remote reboots, identify device info from the barcode of a device (using QuaggaJS), and much more.
     <br />
     <br />
     <a href="https://github.com/CampAsAChamp/IDTech/issues">Report Bug</a>
