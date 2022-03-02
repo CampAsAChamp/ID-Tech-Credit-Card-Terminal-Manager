@@ -181,7 +181,7 @@ function getMatchingEntries(data, query, sortingMethod, lastStatus, to, from) {
 }
 
 const two_fact_code = Math.floor(100000 + Math.random() * 900000);
-const two_fact_default = 837412;
+const two_fact_default = 123456;
 
 // Two Factor Authentication
 router.get('/twofact', function (req, res) {
@@ -219,12 +219,13 @@ router.post('/login', function (req, res) {
     let user_name_and_password = req.session.user.id + "." + req.session.user.password;
     if (validateLogin(user_name_and_password)) {
         const from = '18452531040'; //nexmo number
-        const phoneNumber = 19162188231;
+        const phoneNumber = 123456789;
 
         const text = 'ID TECH Code is ' + two_fact_code;
         console.log(two_fact_code);
         nexmo.message.sendSms(from, phoneNumber, text);
         return res.redirect('/twofact');
+
     } else {
         return res.render('pages/login', {
             "status": false,
