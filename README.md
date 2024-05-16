@@ -62,6 +62,8 @@
 * [QuaggaJS](https://serratus.github.io/quaggaJS/)
 * [EJS](https://ejs.co/)
 
+[![My Skills](https://skillicons.dev/icons?i=nodejs,express,ejs)](https://skillicons.dev)
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
